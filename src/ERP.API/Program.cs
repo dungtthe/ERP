@@ -2,6 +2,7 @@
 using ERP.Infrastructure;
 using ERP.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -17,6 +18,9 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 
+//Application
+builder.Services.AddMediatR(cfg =>
+    cfg.RegisterServicesFromAssembly(ERP.Application.AssemblyReference.Assembly));
 
 //Infrastructure
 builder.Services.AddInfrastructure(builder.Configuration);

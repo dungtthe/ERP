@@ -9,6 +9,7 @@ namespace ERP.Domain.Repositories
 {
     public interface IUserRepository
     {
-        Task Add(User user, CancellationToken cancellationToken = default);
+        Task AddAsync(User user, CancellationToken cancellationToken = default);
+        Task <List<User>> GetAllAsync(CancellationToken cancellationToken = default);
     }
 }

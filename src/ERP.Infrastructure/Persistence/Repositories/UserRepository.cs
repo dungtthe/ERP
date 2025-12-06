@@ -1,5 +1,6 @@
 ﻿using ERP.Domain.Entities;
 using ERP.Domain.Repositories;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,9 +17,14 @@ namespace ERP.Infrastructure.Persistence.Repositories
             _dbContext = dbContext;
         }
 
-        public async Task Add(User user, CancellationToken cancellationToken = default)
+        public async Task AddAsync(User user, CancellationToken cancellationToken = default)
         {
             await _dbContext.Users.AddAsync(user, cancellationToken);
+        }
+
+        public async Task<List<User>> GetAllAsync(CancellationToken cancellationToken = default)
+        {
+            return await _dbContext.Users.ToListAsync(cancellationToken);
         }
     }
 }
