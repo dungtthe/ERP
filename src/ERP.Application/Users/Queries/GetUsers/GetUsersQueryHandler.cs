@@ -1,7 +1,9 @@
 ﻿using ERP.Application.Abstractions.Messaging;
 using ERP.Application.Abstractions.ReadDb;
+using ERP.Application.Helpers.Paginations;
 using ERP.Domain.Repositories;
 using ERP.Domain.Shared;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -11,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace ERP.Application.Users.Queries.GetUsers
 {
-    public class GetUsersQueryHandler : IQueryHandler<GetUsersQuery, List<UserRespone>>
+    public class GetUsersQueryHandler : IQueryHandler<GetUsersQuery, PagedList<UserRespone>>
     {
         private readonly IReadAppDbContext _readAppDbContext;
         public GetUsersQueryHandler(IReadAppDbContext readAppDbContext)
@@ -19,16 +21,29 @@ namespace ERP.Application.Users.Queries.GetUsers
             _readAppDbContext = readAppDbContext;
         }
 
-        public async Task<Result<List<UserRespone>>> Handle(GetUsersQuery request, CancellationToken cancellationToken)
+        public async Task<Result<PagedList<UserRespone>>> Handle(GetUsersQuery request, CancellationToken cancellationToken)
         {
-            var rs = await _readAppDbContext.Users.ToListAsync(cancellationToken);
-            var users = rs.Select(u => new UserRespone
+            var query = _readAppDbContext.Users.AsQueryable();
+
+            if (!string.IsNullOrWhiteSpace(request.SearchTerm))
+            {
+                var term = request.SearchTerm.Trim();
+                query = query.Where(u => u.Username.Contains(term));
+            }
+
+            var responseQuery = query.Select(u => new UserRespone
             {
                 Id = u.Id,
                 Username = u.Username
-            }).ToList();
+            });
 
-            return users;
+            var pagedResult = await PagedList<UserRespone>.CreateAsync(
+                responseQuery,
+                request.Page,
+                request.PageSize,
+                cancellationToken);
+
+            return pagedResult;
         }
     }
 }

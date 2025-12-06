@@ -26,8 +26,8 @@ namespace ERP.API.Controllers
         }
 
 
-        [HttpGet("")]
-        public async Task<IActionResult> GetUsers(GetUsersQuery query)
+        [HttpPost("")]
+        public async Task<IActionResult> GetUsers([FromBody] GetUsersQuery query)
         {
             var result = await _sender.Send(query);
             return Ok(result.Value);
