@@ -1,4 +1,5 @@
-﻿using ERP.Domain.Repositories;
+﻿using ERP.Application.Abstractions.ReadDb;
+using ERP.Domain.Repositories;
 using ERP.Infrastructure.Persistence;
 using ERP.Infrastructure.Persistence.Repositories;
 using Microsoft.EntityFrameworkCore;
@@ -20,6 +21,7 @@ namespace ERP.Infrastructure
             {
                 options.UseNpgsql(configuration.GetConnectionString("Database"));
             });
+            services.AddScoped<IReadAppDbContext>(provider => provider.GetRequiredService<AppDbContext>());
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             return services;
