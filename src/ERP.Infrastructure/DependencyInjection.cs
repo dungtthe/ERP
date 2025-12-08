@@ -22,8 +22,9 @@ namespace ERP.Infrastructure
                 options.UseNpgsql(configuration.GetConnectionString("Database"));
             });
             services.AddScoped<IReadAppDbContext>(provider => provider.GetRequiredService<AppDbContext>());
-            services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<ICustomerRepository, CustomerRepository>();
             return services;
         }
     }

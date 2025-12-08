@@ -28,13 +28,13 @@ namespace ERP.Application.Users.Queries.GetUsers
             if (!string.IsNullOrWhiteSpace(request.SearchTerm))
             {
                 var term = request.SearchTerm.Trim();
-                query = query.Where(u => u.Username.Contains(term));
+                query = query.Where(u => u.Email.Contains(term));
             }
 
             var responseQuery = query.Select(u => new UserRespone
             {
                 Id = u.Id,
-                Username = u.Username
+                Username = u.Email
             });
 
             var pagedResult = await PagedList<UserRespone>.CreateAsync(

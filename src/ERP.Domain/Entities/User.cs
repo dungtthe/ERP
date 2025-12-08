@@ -1,24 +1,29 @@
 ﻿using ERP.Domain.Primitives;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ERP.Domain.Entities
 {
-    //tam thoi nhu nay de test config ef da
     public class User : Entity
     {
-        public string Username { get; private set; }
-        private User(Guid id, string username) : base(id)
+        public string PhoneNumber { get; private set; }
+        public string Address { get; private set; }
+        public string AvatarUrl { get; private set; }
+        public string Email { get; private set; }
+        public string Password { get; private set; }
+        public Boolean IsLock { get; private set; }
+
+        private User(Guid id, string phoneNumber, string address, string avatarUrl, string email, string password, Boolean isLock) : base(id)
         {
-            Username = username;
+            PhoneNumber = phoneNumber;
+            Address = address;
+            AvatarUrl = avatarUrl;
+            Email = email;
+            Password = password;
+            IsLock = isLock;
         }
 
-        public static User Create(Guid id, string username)
+        public static User Create(Guid id, string phoneNumber, string address, string avatarUrl, string email, string password, Boolean isLock)
         {
-            return new User(id, username);
+            return new User(id, phoneNumber, address, avatarUrl, email, password, isLock);
         }
     }
 }

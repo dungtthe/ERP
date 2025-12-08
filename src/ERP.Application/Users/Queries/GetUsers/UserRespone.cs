@@ -9,6 +9,6 @@ namespace ERP.Application.Users.Queries.GetUsers
     public record UserRespone
     {
         public Guid Id { get; init; }
-        public string Username { get; init; }
+        public string? Username { get; init; }
     }
 }

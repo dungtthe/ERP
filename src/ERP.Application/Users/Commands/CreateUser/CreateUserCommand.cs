@@ -9,6 +9,6 @@ namespace ERP.Application.Users.Commands.CreateUser
 {
     public record CreateUserCommand
     (
-        string Username//tam thoi test da
-    ):ICommand<Guid>;
+        string Username
+    ) : ICommand<Guid>;
 }

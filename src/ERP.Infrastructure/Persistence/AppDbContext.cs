@@ -12,11 +12,18 @@ namespace ERP.Infrastructure.Persistence
     public class AppDbContext : DbContext, IReadAppDbContext
     {
         public DbSet<User> Users => Set<User>();
-
+        public DbSet<Employee> Employees => Set<Employee>();
+        public DbSet<Customer> Customers => Set<Customer>();
+        public DbSet<Supplier> Suppliers => Set<Supplier>();
+        public DbSet<Department> Departments => Set<Department>();
 
 
         #region ReadDb
         IQueryable<User> IReadAppDbContext.Users => Users.AsNoTracking();
+        IQueryable<Employee> IReadAppDbContext.Employees => Employees.AsNoTracking();
+        IQueryable<Customer> IReadAppDbContext.Customers => Customers.AsNoTracking();
+        IQueryable<Supplier> IReadAppDbContext.Suppliers => Suppliers.AsNoTracking();
+        IQueryable<Department> IReadAppDbContext.Departments => Departments.AsNoTracking();
         #endregion
 
 

@@ -1,3 +1,7 @@
 dotnet ef migrations add Init -s ..\ERP.API\ERP.API.csproj --output-dir Persistence\Migrations
 
 dotnet ef database update -s ..\ERP.API\ERP.API.csproj
+
+dotnet ef database drop -s ..\ERP.API\ERP.API.csproj
+
+dotnet ef migrations remove -s ..\ERP.API\ERP.API.csproj
