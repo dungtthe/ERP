@@ -17,5 +17,14 @@ namespace ERP.Infrastructure.Persistence.Repositories
         {
             return await _dbContext.Customers.ToListAsync(cancellationToken);
         }
+
+        public async Task<Customer?> GetCustomerByIdAsync(Guid id, CancellationToken cancellationToken = default)
+        {
+            if (id == Guid.Empty)
+            {
+                throw new ArgumentException("The customer ID cannot be empty.", nameof(id));
+            }
+            return await _dbContext.Customers.FirstOrDefaultAsync(c => c.Id == id, cancellationToken);
+        }
     }
 }
