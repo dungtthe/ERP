@@ -17,5 +17,10 @@ namespace ERP.Infrastructure.Persistence.Repositories
         {
             return _dbContext.Suppliers.ToListAsync(cancellationToken);
         }
+
+        public async Task<Customer?> GetCustomerByIdAsync(Guid id, CancellationToken cancellationToken = default)
+        {
+            return await _dbContext.Customers.FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
+        }
     }
 }

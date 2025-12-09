@@ -4,25 +4,24 @@ using ERP.Domain.Errors;
 using ERP.Domain.Shared;
 using Microsoft.EntityFrameworkCore;
 
-namespace ERP.Application.Customers.Queries.GetCustomerById
+namespace ERP.Application.Suppliers.Queries.GetSupplierById
 {
-    public class GetCustomerByIdQueryHandler : IQueryHandler<GetCustomerByIdQuery, CustomerByIdResponse>
+    public class GetSupplierByIdQueryHandler : IQueryHandler<GetSupplierByIdQuery, SupplierByIdResponse>
     {
         private readonly IReadAppDbContext _readDbContext;
-        public GetCustomerByIdQueryHandler(IReadAppDbContext readDbContext)
+        public GetSupplierByIdQueryHandler(IReadAppDbContext readDbContext)
         {
             _readDbContext = readDbContext;
         }
-        public async Task<Result<CustomerByIdResponse>> Handle(GetCustomerByIdQuery request, CancellationToken cancellationToken)
+        public async Task<Result<SupplierByIdResponse>> Handle(GetSupplierByIdQuery request, CancellationToken cancellationToken)
         {
-
             if (request.Id == Guid.Empty)
             {
-                return Result.Failure<CustomerByIdResponse>(DomainErrors.Id.Empty);
+                return Result.Failure<SupplierByIdResponse>(DomainErrors.Id.Empty);
             }
 
 
-            var query = await _readDbContext.Customers
+            var query = await _readDbContext.Suppliers
                             .Where(c => c.Id == request.Id)
                             .Include(c => c.User)
                             .FirstOrDefaultAsync(cancellationToken);
@@ -30,10 +29,10 @@ namespace ERP.Application.Customers.Queries.GetCustomerById
             if (query is null)
             {
 
-                return Result.Failure<CustomerByIdResponse>(DomainErrors.CustomerNotFound.NotFound);
+                return Result.Failure<SupplierByIdResponse>(DomainErrors.SupplierNotFound.NotFound);
             }
 
-            var responseQuery = new CustomerByIdResponse
+            var responseQuery = new SupplierByIdResponse
             {
                 Id = query.Id,
                 CompanyName = query.CompanyName,
@@ -44,7 +43,8 @@ namespace ERP.Application.Customers.Queries.GetCustomerById
             };
 
             return Result.Success(responseQuery);
-
         }
+
+
     }
 }
