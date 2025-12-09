@@ -11,9 +11,14 @@ namespace ERP.Infrastructure.Persistence.Repositories
         {
             _dbContext = dbContext;
         }
-        public Task<List<Employee>> GetAllAsync(CancellationToken cancellationToken = default)
+        public async Task<List<Employee>> GetAllAsync(CancellationToken cancellationToken = default)
         {
-            return _dbContext.Employees.ToListAsync(cancellationToken);
+            return await _dbContext.Employees.ToListAsync(cancellationToken);
+        }
+
+        public async Task<Employee?> GetEmployeeByIdAsync(Guid id, CancellationToken cancellationToken = default)
+        {
+            return await _dbContext.Employees.FirstOrDefaultAsync(e => e.Id == id, cancellationToken);
         }
     }
 }

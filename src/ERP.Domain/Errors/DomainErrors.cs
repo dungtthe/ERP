@@ -21,6 +21,10 @@ namespace ERP.Domain.Errors
         {
             public static readonly Error NotFound = new("Supplier.NotFound", "Nhà cung cấp không tồn tại");
         }
+        public static class EmployeeNotFound
+        {
+            public static readonly Error NotFound = new("Employee.NotFound", "Nhân viên không tồn tại");
+        }
 
 
     }
