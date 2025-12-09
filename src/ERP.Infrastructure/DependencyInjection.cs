@@ -25,6 +25,7 @@ namespace ERP.Infrastructure
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<ICustomerRepository, CustomerRepository>();
+            services.AddScoped<ISupplierRepository, SupplierRepository>();
             return services;
         }
     }

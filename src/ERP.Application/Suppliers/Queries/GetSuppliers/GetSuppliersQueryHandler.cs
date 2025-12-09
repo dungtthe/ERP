@@ -1,32 +1,31 @@
 using ERP.Application.Abstractions.Messaging;
 using ERP.Application.Abstractions.ReadDb;
 using ERP.Application.Helpers.Paginations;
-using ERP.Application.Users.Queries.GetCustomers;
 using ERP.Domain.Shared;
 using Microsoft.EntityFrameworkCore;
 
-namespace ERP.Application.Customers.Queries.GetCustomers
+namespace ERP.Application.Suppliers.Queries.GetSuppliers
 {
-    public class GetCustomersQueryHandler : IQueryHandler<GetCustomersQuery, PagedList<CustomerResponse>>
+    public class GetSuppliersQueryHandler : IQueryHandler<GetSuppliersQuery, PagedList<SupplierResponse>>
     {
         private readonly IReadAppDbContext _readDbContext;
-        public GetCustomersQueryHandler(IReadAppDbContext readDbContext)
+        public GetSuppliersQueryHandler(IReadAppDbContext readDbContext)
         {
             _readDbContext = readDbContext;
         }
-        public async Task<Result<PagedList<CustomerResponse>>> Handle(GetCustomersQuery request, CancellationToken cancellationToken)
+        public async Task<Result<PagedList<SupplierResponse>>> Handle(GetSuppliersQuery request, CancellationToken cancellationToken)
         {
-            var query = _readDbContext.Customers
+            var query = _readDbContext.Suppliers
                             .Include(c => c.User)
                             .AsQueryable();
 
             if (!string.IsNullOrWhiteSpace(request.SearchTerm))
             {
-                var term = request.SearchTerm.Trim();
-                query = query.Where(c => c.CompanyName.Contains(term));
+                var term = request.SearchTerm.Trim().ToLower();
+                query = query.Where(c => c.CompanyName.ToLower().Contains(term));
             }
 
-            var responseQuery = query.Select(c => new CustomerResponse
+            var responseQuery = query.Select(c => new SupplierResponse
             {
                 Id = c.Id,
                 CompanyName = c.CompanyName,
@@ -36,7 +35,7 @@ namespace ERP.Application.Customers.Queries.GetCustomers
                 AvatarUrl = c.User.AvatarUrl
             });
 
-            var pagedResult = await PagedList<CustomerResponse>.CreateAsync(
+            var pagedResult = await PagedList<SupplierResponse>.CreateAsync(
                 responseQuery,
                 request.Page,
                 request.PageSize,
