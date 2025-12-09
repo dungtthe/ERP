@@ -35,7 +35,6 @@ namespace ERP.Infrastructure.Persistence.Configurations
                 .IsUnique();
 
             builder.Property(x => x.Password)
-                .IsRequired()
                 .HasMaxLength(100)
                 .HasColumnName("password");
 

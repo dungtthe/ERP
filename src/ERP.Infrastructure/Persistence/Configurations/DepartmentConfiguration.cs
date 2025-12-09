@@ -22,7 +22,6 @@ namespace ERP.Infrastructure.Persistence.Configurations
                     .HasColumnType("text[]");
 
             builder.Property(x => x.EmployeeId)
-                .IsRequired()
                 .HasMaxLength(200)
                 .HasColumnName("employee_id");
 
@@ -30,7 +29,6 @@ namespace ERP.Infrastructure.Persistence.Configurations
                 .WithOne()
                 .HasForeignKey<Department>(x => x.EmployeeId)
                 .OnDelete(DeleteBehavior.Restrict)
-                .IsRequired()
                 .HasConstraintName("FK_Departments_Employees");
         }
     }

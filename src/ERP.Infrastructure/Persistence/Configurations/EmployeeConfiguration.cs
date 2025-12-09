@@ -35,6 +35,9 @@ namespace ERP.Infrastructure.Persistence.Configurations
                 .IsRequired()
                 .HasColumnName("hire_date");
 
+            builder.Property(e => e.DateOfBirth)
+                .HasColumnName("date_of_birth");
+
             builder.Property(e => e.Status)
                 .IsRequired()
                 .HasMaxLength(50)

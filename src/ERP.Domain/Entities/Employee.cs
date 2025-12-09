@@ -8,6 +8,7 @@ namespace ERP.Domain.Entities
         public string LastName { get; private set; }
         public string Position { get; private set; }
         public DateTime HireDate { get; private set; }
+        public DateTime DateOfBirth { get; private set; }
         public string Status { get; private set; }
         public string Gender { get; private set; }
         public decimal Salary { get; private set; }
@@ -15,20 +16,21 @@ namespace ERP.Domain.Entities
         public User? User { get; private set; }
         public Guid DepartmentId { get; private set; }
         public Department? Department { get; private set; }
-        private Employee(Guid id, string firstName, string lastName, string position, DateTime hireDate, string status, string gender, decimal salary) : base(id)
+        private Employee(Guid id, string firstName, string lastName, string position, DateTime hireDate, DateTime dateOfBirth, string status, string gender, decimal salary) : base(id)
         {
             FirstName = firstName;
             LastName = lastName;
             Position = position;
             HireDate = hireDate;
+            DateOfBirth = dateOfBirth;
             Status = status;
             Gender = gender;
             Salary = salary;
         }
 
-        public static Employee Create(Guid id, string firstName, string lastName, string position, DateTime hireDate, string status, string gender, decimal salary)
+        public static Employee Create(Guid id, string firstName, string lastName, string position, DateTime hireDate, DateTime dateOfBirth, string status, string gender, decimal salary)
         {
-            return new Employee(id, firstName, lastName, position, hireDate, status, gender, salary);
+            return new Employee(id, firstName, lastName, position, hireDate, dateOfBirth, status, gender, salary);
         }
 
         // ===== Domain Behavior =====
