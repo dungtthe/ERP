@@ -1,3 +1,4 @@
+using ERP.Application.Suppliers.Commands.CreateSupplier;
 using ERP.Application.Suppliers.Queries.GetSupplierById;
 using ERP.Application.Suppliers.Queries.GetSuppliers;
 using MediatR;
@@ -29,6 +30,17 @@ namespace ERP.API.Controllers
                 return NotFound(result.Error);
             }
             return Ok(result.Value);
+        }
+
+        [HttpPost("create")]
+        public async Task<IActionResult> CreateSupplier([FromBody] CreateSupplierCommand command)
+        {
+            var result = await _sender.Send(command);
+            if (result.IsFailure)
+            {
+                return BadRequest(result.Error);
+            }
+            return Ok(new { id = result.Value });
         }
     }
 }

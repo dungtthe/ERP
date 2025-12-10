@@ -15,7 +15,7 @@ namespace ERP.Infrastructure.Persistence.Configurations
             builder.Property(x => x.CompanyName)
                 .IsRequired()
                 .HasMaxLength(200)
-                .HasColumnName("supplier_name");
+                .HasColumnName("company_name");
 
             builder.Property(x => x.UserId)
                 .IsRequired()

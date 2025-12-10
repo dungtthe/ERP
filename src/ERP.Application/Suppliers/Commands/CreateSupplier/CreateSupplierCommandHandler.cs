@@ -7,23 +7,22 @@ using ERP.Domain.Repositories;
 using ERP.Domain.Shared;
 using MediatR;
 
-namespace ERP.Application.Customers.Commands.CreateCustomer
+namespace ERP.Application.Suppliers.Commands.CreateSupplier
 {
-    public class CreateCustomerCommandHandler : ICommandHandler<CreateCustomerCommand, Guid>
+    public class CreateSupplierCommandHandler : ICommandHandler<CreateSupplierCommand, Guid>
     {
         private readonly IUnitOfWork _unitOfWork;
-        private readonly ICustomerRepository _customerRepository;
+        private readonly ISupplierRepository _supplierRepository;
         private readonly IUserRepository _userRepository;
         private readonly IMediator _mediator;
-
-        public CreateCustomerCommandHandler(IUnitOfWork unitOfWork, ICustomerRepository customerRepository, IUserRepository userRepository, IMediator mediator)
+        public CreateSupplierCommandHandler(IUnitOfWork unitOfWork, ISupplierRepository supplierRepository, IUserRepository userRepository, IMediator mediator)
         {
             _unitOfWork = unitOfWork;
-            _customerRepository = customerRepository;
+            _supplierRepository = supplierRepository;
             _userRepository = userRepository;
             _mediator = mediator;
         }
-        public async Task<Result<Guid>> Handle(CreateCustomerCommand request, CancellationToken cancellationToken)
+        public async Task<Result<Guid>> Handle(CreateSupplierCommand request, CancellationToken cancellationToken)
         {
             if (string.IsNullOrEmpty(request.CompanyName))
             {
@@ -39,10 +38,10 @@ namespace ERP.Application.Customers.Commands.CreateCustomer
                 }
                 else
                 {
-                    var customer = Customer.Create(request.UserId.Value, request.CompanyName);
-                    await _customerRepository.AddAsync(customer, cancellationToken);
+                    var supplier = Supplier.Create(request.UserId.Value, request.CompanyName);
+                    await _supplierRepository.AddAsync(supplier, cancellationToken);
                     await _unitOfWork.SaveChangesAsync(cancellationToken);
-                    return Result.Success(customer.Id);
+                    return Result.Success(supplier.Id);
                 }
             }
             else
@@ -58,7 +57,6 @@ namespace ERP.Application.Customers.Commands.CreateCustomer
                 {
                     return Result.Failure<Guid>(DomainErrors.UserDuplicateEmail.DuplicateEmail);
                 }
-
                 var user = await _mediator.Send(new CreateUserCommand(
                     request.PhoneNumber!,
                     request.Address!,
@@ -66,12 +64,12 @@ namespace ERP.Application.Customers.Commands.CreateCustomer
                     request.Email!,
                     request.Password!), cancellationToken);
 
-                var customer = Customer.Create(user.Value, request.CompanyName);
-                await _customerRepository.AddAsync(customer, cancellationToken);
-                await _unitOfWork.SaveChangesAsync(cancellationToken);
-                return Result.Success(customer.Id);
-            }
 
+                var supplier = Supplier.Create(user.Value, request.CompanyName);
+                await _supplierRepository.AddAsync(supplier, cancellationToken);
+                await _unitOfWork.SaveChangesAsync(cancellationToken);
+                return Result.Success(supplier.Id);
+            }
         }
     }
 }
