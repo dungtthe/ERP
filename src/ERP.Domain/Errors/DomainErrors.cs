@@ -34,6 +34,10 @@ namespace ERP.Domain.Errors
         {
             public static readonly Error NotFound = new("User.NotFound", "Người dùng không tồn tại");
         }
+        public static class DepartmentNotFound
+        {
+            public static readonly Error NotFound = new("Department.NotFound", "Phòng ban không tồn tại");
+        }
 
     }
 }

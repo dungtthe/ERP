@@ -11,6 +11,12 @@ namespace ERP.Infrastructure.Persistence.Repositories
         {
             _dbContext = dbContext;
         }
+
+        public async Task AddAsync(Employee employee, CancellationToken cancellationToken = default)
+        {
+            await _dbContext.Employees.AddAsync(employee, cancellationToken);
+        }
+
         public async Task<List<Employee>> GetAllAsync(CancellationToken cancellationToken = default)
         {
             return await _dbContext.Employees.ToListAsync(cancellationToken);

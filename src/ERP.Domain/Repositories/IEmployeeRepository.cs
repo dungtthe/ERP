@@ -10,6 +10,7 @@ namespace ERP.Domain.Repositories
     {
         Task<List<Employee>> GetAllAsync(CancellationToken cancellationToken = default);
         Task<Employee?> GetEmployeeByIdAsync(Guid id, CancellationToken cancellationToken = default);
+        Task AddAsync(Employee employee, CancellationToken cancellationToken = default);
 
     }
 }

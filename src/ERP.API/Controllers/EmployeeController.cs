@@ -1,3 +1,4 @@
+using ERP.Application.Employees.Commands.CreateEmployee;
 using ERP.Application.Employees.Queries;
 using ERP.Application.Employees.Queries.GetEmployeeById;
 using ERP.Application.Employees.Queries.GetEmployees;
@@ -19,6 +20,7 @@ namespace ERP.API.Controllers
             var result = await _sender.Send(query);
             return Ok(result.Value);
         }
+
         [HttpGet("{id}")]
         public async Task<IActionResult> GetEmployeeById([FromRoute] Guid id)
         {
@@ -29,6 +31,17 @@ namespace ERP.API.Controllers
                 return NotFound(result.Error);
             }
             return Ok(result.Value);
+        }
+
+        [HttpPost("create")]
+        public async Task<IActionResult> CreateEmployee([FromBody] CreateEmployeeCommand command)
+        {
+            var result = await _sender.Send(command);
+            if (result.IsFailure)
+            {
+                return BadRequest(result.Error);
+            }
+            return Ok(new { id = result.Value });
         }
     }
 }
