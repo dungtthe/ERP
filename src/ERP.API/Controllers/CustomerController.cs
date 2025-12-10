@@ -1,3 +1,4 @@
+using ERP.Application.Customers.Commands.CreateCustomer;
 using ERP.Application.Customers.Queries.GetCustomerById;
 using ERP.Application.Users.Queries.GetCustomers;
 using MediatR;
@@ -30,7 +31,17 @@ namespace ERP.API.Controllers
                 return NotFound(result.Error);
             }
             return Ok(result.Value);
+        }
 
+        [HttpPost("create")]
+        public async Task<IActionResult> CreateCustomer([FromBody] CreateCustomerCommand command)
+        {
+            var result = await _sender.Send(command);
+            if (result.IsFailure)
+            {
+                return BadRequest(result.Error);
+            }
+            return Ok(new { id = result.Value });
         }
     }
 }

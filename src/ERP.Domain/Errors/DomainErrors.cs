@@ -5,10 +5,11 @@ namespace ERP.Domain.Errors
 {
     public static class DomainErrors
     {
-        public static class UserName
+        public static class Information
         {
-            public static readonly Error Empty = new("UserName.Empty", "Tên tài khoản không được để trống");
+            public static readonly Error Empty = new("Information.Empty", "Thông tin không được để trống");
         }
+
         public static class Id
         {
             public static readonly Error Empty = new("Id.Empty", "ID không được để trống");
@@ -25,7 +26,14 @@ namespace ERP.Domain.Errors
         {
             public static readonly Error NotFound = new("Employee.NotFound", "Nhân viên không tồn tại");
         }
-
+        public static class UserDuplicateEmail
+        {
+            public static readonly Error DuplicateEmail = new("User.DuplicateEmail", "Email đã tồn tại");
+        }
+        public static class UserNotFound
+        {
+            public static readonly Error NotFound = new("User.NotFound", "Người dùng không tồn tại");
+        }
 
     }
 }

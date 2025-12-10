@@ -9,6 +9,10 @@ namespace ERP.Application.Users.Commands.CreateUser
 {
     public record CreateUserCommand
     (
-        string Username
+        string? PhoneNumber,
+        string? Address,
+        string? AvatarUrl,
+        string? Email,
+        string? Password
     ) : ICommand<Guid>;
 }

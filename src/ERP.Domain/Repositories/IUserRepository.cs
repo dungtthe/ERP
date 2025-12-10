@@ -6,5 +6,6 @@ namespace ERP.Domain.Repositories
     {
         Task AddAsync(User user, CancellationToken cancellationToken = default);
         Task<List<User>> GetAllAsync(CancellationToken cancellationToken = default);
+        Task<User?> GetByEmailAsync(string email, CancellationToken cancellationToken = default);
     }
 }

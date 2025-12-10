@@ -6,6 +6,6 @@ namespace ERP.Domain.Repositories
     {
         Task<List<Customer>> GetAllAsync(CancellationToken cancellationToken = default);
         Task<Customer?> GetCustomerByIdAsync(Guid id, CancellationToken cancellationToken = default);
-
+        Task AddAsync(Customer customer, CancellationToken cancellationToken = default);
     }
 }

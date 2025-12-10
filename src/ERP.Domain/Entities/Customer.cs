@@ -12,10 +12,9 @@ namespace ERP.Domain.Entities
             CompanyName = companyName;
         }
 
-        public static Customer Create(Guid id, string companyName)
+        public static Customer Create(Guid? userId, string companyName)
         {
-            return new Customer(id, companyName);
+            return new Customer(Guid.NewGuid(), companyName) { UserId = userId ?? Guid.Empty };
         }
-
     }
 }
