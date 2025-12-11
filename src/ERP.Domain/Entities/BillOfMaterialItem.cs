@@ -12,8 +12,8 @@ namespace ERP.Domain.Entities
         public BillOfMaterialItem(Guid id):base(id) { }
         public Guid BillOfMaterialId { get; set; }
         public BillOfMaterial BillOfMaterial { get; set; }
-        public Guid ProductVariantId { get; set; }
-        public ProductVariant ProductVariant { get; set; }
+        public Guid MaterialId { get; set; }
+        public ProductVariant Material { get; set; }
         public double QuantityRequired { get; set; }
         public Guid UnitOfMeasureId { get; set; }
         public UnitOfMeasure UnitOfMeasure { get; set; }

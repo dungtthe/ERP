@@ -10,10 +10,9 @@ namespace ERP.Domain.Entities
     public class Routing:Entity
     {
         public Routing(Guid id):base(id) { }
-        public Guid ProductVariantId { get; set; }
-        public ProductVariant ProductVariant { get; set; }
-        public string Version { get; set; }
-        public bool IsActive { get; set; }
+        public Guid BillOfMaterialId { get; set; }
+        public BillOfMaterial BillOfMaterial { get; set; }
+        public byte Version { get; set; }
         public string Note { get; set; }
     }
 }

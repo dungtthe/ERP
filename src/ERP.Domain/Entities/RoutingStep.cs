@@ -13,8 +13,6 @@ namespace ERP.Domain.Entities
         public Guid RoutingId { get; set; }
         public Routing Routing { get; set; }
         public byte StepOrder { get; set; }
-        public Guid WorkCenterId { get; set; }
-        public WorkCenter WorkCenter { get; set; }
         public string OperationName { get; set; }
         public double OperationTime { get; set; }
         public List<string> Images { get; set; } = new();

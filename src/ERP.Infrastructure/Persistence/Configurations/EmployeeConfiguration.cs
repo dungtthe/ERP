@@ -61,7 +61,7 @@ namespace ERP.Infrastructure.Persistence.Configurations
             builder.HasOne(e => e.User)
                 .WithOne()
                 .HasForeignKey<Employee>(e => e.UserId)
-                .OnDelete(DeleteBehavior.Cascade)
+                .OnDelete(DeleteBehavior.Restrict)
                 .IsRequired()
                 .HasConstraintName("FK_Employees_Users");
 
