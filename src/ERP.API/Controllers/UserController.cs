@@ -12,7 +12,6 @@ namespace ERP.API.Controllers
         {
         }
 
-
         [HttpPost("create")]
         public async Task<IActionResult> CreateUser([FromBody] CreateUserCommand request, CancellationToken cancellationToken)
         {
@@ -24,7 +23,6 @@ namespace ERP.API.Controllers
 
             return Ok(new { id = result.Value });
         }
-
 
         [HttpPost("")]
         public async Task<IActionResult> GetUsers([FromBody] GetUsersQuery query)

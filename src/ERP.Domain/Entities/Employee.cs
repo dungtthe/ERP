@@ -28,9 +28,9 @@ namespace ERP.Domain.Entities
             Salary = salary;
         }
 
-        public static Employee Create(Guid id, string firstName, string lastName, string position, DateTime hireDate, DateTime dateOfBirth, string status, string gender, decimal salary)
+        public static Employee Create(Guid? userId, Guid? departmentId, string firstName, string lastName, string position, DateTime hireDate, DateTime dateOfBirth, string status, string gender, decimal salary)
         {
-            return new Employee(id, firstName, lastName, position, hireDate, dateOfBirth, status, gender, salary);
+            return new Employee(Guid.NewGuid(), firstName, lastName, position, hireDate, dateOfBirth, status, gender, salary) { UserId = userId ?? Guid.Empty, DepartmentId = departmentId ?? Guid.Empty };
         }
 
         // ===== Domain Behavior =====

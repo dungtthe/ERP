@@ -8,10 +8,10 @@ namespace ERP.Domain.Entities
         public string Address { get; private set; }
         public string AvatarUrl { get; private set; }
         public string Email { get; private set; }
-        public string Password { get; private set; }
+        public string? Password { get; private set; }
         public Boolean IsLock { get; private set; }
 
-        private User(Guid id, string phoneNumber, string address, string avatarUrl, string email, string password, Boolean isLock) : base(id)
+        private User(Guid id, string phoneNumber, string address, string avatarUrl, string email, string? password, Boolean isLock) : base(id)
         {
             PhoneNumber = phoneNumber;
             Address = address;
@@ -21,9 +21,9 @@ namespace ERP.Domain.Entities
             IsLock = isLock;
         }
 
-        public static User Create(Guid id, string phoneNumber, string address, string avatarUrl, string email, string password, Boolean isLock)
+        public static User Create(string phoneNumber, string address, string avatarUrl, string email, string? password, Boolean isLock = false)
         {
-            return new User(id, phoneNumber, address, avatarUrl, email, password, isLock);
+            return new User(Guid.NewGuid(), phoneNumber, address, avatarUrl, email, password, isLock);
         }
     }
 }

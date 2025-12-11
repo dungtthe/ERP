@@ -26,5 +26,10 @@ namespace ERP.Infrastructure.Persistence.Repositories
         {
             return await _dbContext.Users.ToListAsync(cancellationToken);
         }
+
+        public async Task<User?> GetByEmailAsync(string email, CancellationToken cancellationToken = default)
+        {
+            return await _dbContext.Users.FirstOrDefaultAsync(u => u.Email == email, cancellationToken);
+        }
     }
 }

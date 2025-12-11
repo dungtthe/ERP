@@ -13,9 +13,19 @@ namespace ERP.Infrastructure.Persistence.Repositories
             _dbContext = dbContext;
         }
 
-        public Task<List<Supplier>> GetAllAsync(CancellationToken cancellationToken = default)
+        public async Task AddAsync(Supplier supplier, CancellationToken cancellationToken = default)
         {
-            return _dbContext.Suppliers.ToListAsync(cancellationToken);
+            await _dbContext.Suppliers.AddAsync(supplier, cancellationToken);
+        }
+
+        public async Task<List<Supplier>> GetAllAsync(CancellationToken cancellationToken = default)
+        {
+            return await _dbContext.Suppliers.ToListAsync(cancellationToken);
+        }
+
+        public async Task<Supplier?> GetSupplierByIdAsync(Guid id, CancellationToken cancellationToken = default)
+        {
+            return await _dbContext.Suppliers.FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
         }
     }
 }

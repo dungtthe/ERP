@@ -12,9 +12,9 @@ namespace ERP.Domain.Entities
             CompanyName = companyName;
         }
 
-        public static Supplier Create(Guid id, string companyName)
+        public static Supplier Create(Guid? userId, string companyName)
         {
-            return new Supplier(id, companyName);
+            return new Supplier(Guid.NewGuid(), companyName) { UserId = userId ?? Guid.Empty };
         }
     }
 }
