@@ -1,5 +1,7 @@
-﻿using ERP.Application.Users.Commands.CreateUser;
+﻿using ERP.Application.Abstractions.Services;
+using ERP.Application.Users.Commands.CreateUser;
 using ERP.Application.Users.Queries.GetUsers;
+using ERP.Application.Users.Queries.Login;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,8 +10,10 @@ namespace ERP.API.Controllers
     [Route("api/users")]
     public class UserController : BaseApiController
     {
-        public UserController(ISender mediator) : base(mediator)
+        private readonly IUserService _userService;
+        public UserController(ISender mediator, IUserService userService) : base(mediator)
         {
+            _userService = userService;
         }
 
         [HttpPost("create")]
@@ -29,6 +33,25 @@ namespace ERP.API.Controllers
         {
             var result = await _sender.Send(query);
             return Ok(result.Value);
+        }
+
+
+        [HttpPost("/api/login")]
+        public async Task<IActionResult> LoginAsync([FromBody]LoginQuery query)
+        {
+            var rs = await _sender.Send(query);
+            if (rs.IsFailure)
+            {
+                return BadRequest(rs.Error);
+            }
+            return Ok(rs.Value);
+        }
+
+
+        [HttpGet("/test")]
+        public async Task <IActionResult> Test()
+        {
+            return Ok(_userService.UserId);
         }
     }
 }

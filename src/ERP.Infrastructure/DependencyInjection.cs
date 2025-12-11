@@ -1,7 +1,11 @@
-﻿using ERP.Application.Abstractions.ReadDb;
+﻿using ERP.Application.Abstractions.Authentication;
+using ERP.Application.Abstractions.ReadDb;
+using ERP.Application.Abstractions.Services;
 using ERP.Domain.Repositories;
+using ERP.Infrastructure.Authentication;
 using ERP.Infrastructure.Persistence;
 using ERP.Infrastructure.Persistence.Repositories;
+using ERP.Infrastructure.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -27,6 +31,10 @@ namespace ERP.Infrastructure
             services.AddScoped<ICustomerRepository, CustomerRepository>();
             services.AddScoped<ISupplierRepository, SupplierRepository>();
             services.AddScoped<IEmployeeRepository, EmployeeRepository>();
+
+            services.AddScoped<IUserService, UserService>();
+            services.AddSingleton<IJwtProvider, JwtProvider>();
+
             return services;
         }
     }
