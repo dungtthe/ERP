@@ -1,7 +1,10 @@
 ﻿
+using ERP.Application.Behaviors;
 using ERP.Infrastructure;
 using ERP.Infrastructure.Authentication;
 using ERP.Infrastructure.Persistence;
+using FluentValidation;
+using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -26,6 +29,9 @@ builder.Services.AddSwaggerGen();
 //Application
 builder.Services.AddMediatR(cfg =>
     cfg.RegisterServicesFromAssembly(ERP.Application.AssemblyReference.Assembly));
+builder.Services.AddScoped(typeof(IPipelineBehavior<,>), typeof(ValidationPipelineBehavior<,>));
+builder.Services.AddValidatorsFromAssembly(ERP.Application.AssemblyReference.Assembly,
+    includeInternalTypes: true);
 
 //Infrastructure
 builder.Services.AddInfrastructure(builder.Configuration);

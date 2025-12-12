@@ -23,10 +23,6 @@ namespace ERP.Application.Users.Queries.Login
         }
         public async Task<Result<LoginRespone>> Handle(LoginQuery request, CancellationToken cancellationToken)
         {
-            if(string.IsNullOrEmpty(request.Email) || string.IsNullOrEmpty(request.Password))
-            {
-                return Result.Failure<LoginRespone>(new Error("empty", "Vui lòng nhập đủ thông tin"));
-            }
             var fUser = await _readAppDbContext.Users.FirstOrDefaultAsync(u=>u.Email == request.Email);
             if (fUser is null  || fUser.Password != request.Password)
             {

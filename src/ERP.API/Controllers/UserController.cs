@@ -2,7 +2,9 @@
 using ERP.Application.Users.Commands.CreateUser;
 using ERP.Application.Users.Queries.GetUsers;
 using ERP.Application.Users.Queries.Login;
+using ERP.Domain.Shared;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ERP.API.Controllers
@@ -47,7 +49,7 @@ namespace ERP.API.Controllers
             return Ok(rs.Value);
         }
 
-
+        [Authorize]
         [HttpGet("/test")]
         public async Task <IActionResult> Test()
         {
