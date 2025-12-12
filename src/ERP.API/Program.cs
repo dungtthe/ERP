@@ -1,4 +1,5 @@
 ﻿
+using ERP.API.MyMiddlewares;
 using ERP.Application.Behaviors;
 using ERP.Infrastructure;
 using ERP.Infrastructure.Authentication;
@@ -90,6 +91,9 @@ builder.Services.AddCors(options =>
 });
 
 var app = builder.Build();
+
+app.UseMiddleware<GlobalExceptionMiddleware>();
+
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
