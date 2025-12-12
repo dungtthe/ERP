@@ -1,3 +1,4 @@
+using ERP.Application.Abstractions.ReadDb;
 using ERP.Domain.Entities;
 using ERP.Domain.Repositories;
 using Microsoft.EntityFrameworkCore;
@@ -7,9 +8,12 @@ namespace ERP.Infrastructure.Persistence.Repositories
     public class EmployeeRepository : IEmployeeRepository
     {
         private readonly AppDbContext _dbContext;
-        public EmployeeRepository(AppDbContext dbContext)
+        private readonly IReadAppDbContext _readAppDbContext;
+
+        public EmployeeRepository(AppDbContext dbContext, IReadAppDbContext readAppDbContext)
         {
             _dbContext = dbContext;
+            _readAppDbContext = readAppDbContext;
         }
 
         public async Task AddAsync(Employee employee, CancellationToken cancellationToken = default)
@@ -19,12 +23,12 @@ namespace ERP.Infrastructure.Persistence.Repositories
 
         public async Task<List<Employee>> GetAllAsync(CancellationToken cancellationToken = default)
         {
-            return await _dbContext.Employees.ToListAsync(cancellationToken);
+            return await _readAppDbContext.Employees.ToListAsync(cancellationToken);
         }
 
         public async Task<Employee?> GetEmployeeByIdAsync(Guid id, CancellationToken cancellationToken = default)
         {
-            return await _dbContext.Employees.FirstOrDefaultAsync(e => e.Id == id, cancellationToken);
+            return await _readAppDbContext.Employees.FirstOrDefaultAsync(e => e.Id == id, cancellationToken);
         }
     }
 }

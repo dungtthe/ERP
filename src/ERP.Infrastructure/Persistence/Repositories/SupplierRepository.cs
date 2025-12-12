@@ -1,3 +1,4 @@
+using ERP.Application.Abstractions.ReadDb;
 using ERP.Domain.Entities;
 using ERP.Domain.Repositories;
 using Microsoft.EntityFrameworkCore;
@@ -8,9 +9,12 @@ namespace ERP.Infrastructure.Persistence.Repositories
     public class SupplierRepository : ISupplierRepository
     {
         private readonly AppDbContext _dbContext;
-        public SupplierRepository(AppDbContext dbContext)
+        private readonly IReadAppDbContext _readAppDbContext;
+
+        public SupplierRepository(AppDbContext dbContext, IReadAppDbContext readAppDbContext)
         {
             _dbContext = dbContext;
+            _readAppDbContext = readAppDbContext;
         }
 
         public async Task AddAsync(Supplier supplier, CancellationToken cancellationToken = default)
@@ -20,12 +24,12 @@ namespace ERP.Infrastructure.Persistence.Repositories
 
         public async Task<List<Supplier>> GetAllAsync(CancellationToken cancellationToken = default)
         {
-            return await _dbContext.Suppliers.ToListAsync(cancellationToken);
+            return await _readAppDbContext.Suppliers.ToListAsync(cancellationToken);
         }
 
         public async Task<Supplier?> GetSupplierByIdAsync(Guid id, CancellationToken cancellationToken = default)
         {
-            return await _dbContext.Suppliers.FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
+            return await _readAppDbContext.Suppliers.FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
         }
     }
 }

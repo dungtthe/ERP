@@ -35,6 +35,8 @@ namespace ERP.Infrastructure
             services.AddScoped<IProductCatergoryRepository, ProductCatergoryRepository>();
             services.AddScoped<ICategoryRepository, CategoryRepository>();
             services.AddScoped<IUnitOfMeasureRepository, UnitOfMeasureRepository>();
+            services.AddScoped<IProductVariantRepository, ProductVariantRepository>();
+
 
             services.AddScoped<IUserService, UserService>();
             services.AddSingleton<IJwtProvider, JwtProvider>();

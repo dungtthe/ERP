@@ -43,5 +43,15 @@ namespace ERP.Domain.Errors
             public static readonly Error CannotAssignProductToNonLeafCategory = new Error("Category.CannotAssignProductToNonLeafCategory", "Chỉ cho phép trỏ sản phẩm vào danh mục cuối cùng của phân hệ");
         }
 
+        public static class Product
+        {
+            public static readonly Error NotFound = new Error("Product.NotFound", "Sản phẩm không tồn tại");
+        }
+        public static class ProductVariant
+        {
+            public static readonly Error SkuAlreadyExists = new Error("ProductVariant.SkuAlreadyExists", "Mã sản phẩm đã tồn tại");
+        }
+
+
     }
 }

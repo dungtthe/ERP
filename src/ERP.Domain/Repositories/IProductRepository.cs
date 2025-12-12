@@ -10,5 +10,6 @@ namespace ERP.Domain.Repositories
     public interface IProductRepository
     {
         Task AddAsync(Product product);
+        Task<bool> IsProductExist(Guid productId);
     }
 }
