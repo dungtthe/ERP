@@ -16,11 +16,11 @@ namespace ERP.Domain.Primitives
 
         public Guid Id { get; private init; }
 
-        public static bool operator ==(Entity? first, Entity? second) =>
-            first is not null && second is not null && first.Equals(second);
+        //public static bool operator ==(Entity? first, Entity? second) =>
+        //    first is not null && second is not null && first.Equals(second);
 
-        public static bool operator !=(Entity? first, Entity? second) =>
-            !(first == second);
+        //public static bool operator !=(Entity? first, Entity? second) =>
+        //    !(first == second);
 
         public bool Equals(Entity? other)
         {

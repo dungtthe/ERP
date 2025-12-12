@@ -34,6 +34,7 @@ namespace ERP.Infrastructure.Persistence
         public DbSet<ManufacturingOrder> ManufacturingOrders => Set<ManufacturingOrder>();
         public DbSet<WorkCenter> WorkCenters => Set<WorkCenter>();
         public DbSet<WorkOrder> WorkOrders => Set<WorkOrder>();
+        public DbSet<UnitOfMeasure> UnitOfMeasures => Set<UnitOfMeasure>();
 
         #region ReadDb
         IQueryable<User> IReadAppDbContext.Users => Users.AsNoTracking();
@@ -58,6 +59,7 @@ namespace ERP.Infrastructure.Persistence
         IQueryable<ManufacturingOrder> IReadAppDbContext.ManufacturingOrders => ManufacturingOrders.AsNoTracking();
         IQueryable<WorkCenter> IReadAppDbContext.WorkCenters => WorkCenters.AsNoTracking();
         IQueryable<WorkOrder> IReadAppDbContext.WorkOrders => WorkOrders.AsNoTracking();
+        IQueryable<UnitOfMeasure> IReadAppDbContext.UnitOfMeasurements => UnitOfMeasures.AsNoTracking();
         #endregion
 
 

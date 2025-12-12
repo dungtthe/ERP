@@ -1,0 +1,26 @@
+﻿using ERP.Application.Products.Commands.CreateProduct;
+using MediatR;
+using Microsoft.AspNetCore.Mvc;
+namespace ERP.API.Controllers
+{
+
+    [Route("api/products")]
+    public class ProductController : BaseApiController
+    {
+        public ProductController(ISender mediator) : base(mediator)
+        {
+        }
+
+        [HttpPost("create")]
+        public async Task<IActionResult> CreateProductAsync([FromBody]CreateProductCommand request, CancellationToken cancellationToken)
+        {
+            var result = await _sender.Send(request, cancellationToken);
+            if (result.IsFailure)
+            {
+                return BadRequest(result.Error);
+            }
+
+            return Ok(new { id = result.Value });
+        }
+    }
+}

@@ -27,5 +27,7 @@ namespace ERP.Application.Abstractions.ReadDb
         IQueryable<ManufacturingOrder> ManufacturingOrders { get; }
         IQueryable<WorkCenter> WorkCenters { get; }
         IQueryable<WorkOrder> WorkOrders { get; }
+
+        IQueryable<UnitOfMeasure> UnitOfMeasurements { get; }
     }
 }

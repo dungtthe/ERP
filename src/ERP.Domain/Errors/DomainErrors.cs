@@ -39,5 +39,16 @@ namespace ERP.Domain.Errors
             public static readonly Error NotFound = new("Department.NotFound", "Phòng ban không tồn tại");
         }
 
+        public static class UnitOfMeasure
+        {
+            public static readonly Error NotFound = new Error("UnitOfMeasure.NotFound", "Đơn vị tính không tồn tại");
+        }
+
+        public static class Category
+        {
+            public static readonly Error NotFound = new Error("Category.NotFound", "Danh mục không tồn tại");
+            public static readonly Error CannotAssignProductToNonLeafCategory = new Error("Category.CannotAssignProductToNonLeafCategory", "Chỉ cho phép trỏ sản phẩm vào danh mục cuối cùng của phân hệ");
+        }
+
     }
 }
