@@ -29,7 +29,7 @@ namespace ERP.Application.Suppliers.Queries.GetSupplierById
             if (query is null)
             {
 
-                return Result.Failure<SupplierByIdResponse>(DomainErrors.SupplierNotFound.NotFound);
+                return Result.Failure<SupplierByIdResponse>(DomainErrors.Supplier.NotFound);
             }
 
             var responseQuery = new SupplierByIdResponse

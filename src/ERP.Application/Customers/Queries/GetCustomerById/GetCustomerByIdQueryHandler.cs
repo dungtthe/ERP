@@ -30,7 +30,7 @@ namespace ERP.Application.Customers.Queries.GetCustomerById
             if (query is null)
             {
 
-                return Result.Failure<CustomerByIdResponse>(DomainErrors.CustomerNotFound.NotFound);
+                return Result.Failure<CustomerByIdResponse>(DomainErrors.Customer.NotFound);
             }
 
             var responseQuery = new CustomerByIdResponse

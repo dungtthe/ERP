@@ -25,15 +25,9 @@ namespace ERP.Application.Users.Commands.CreateUser
 
         public async Task<Result<Guid>> Handle(CreateUserCommand request, CancellationToken cancellationToken)
         {
-            if (string.IsNullOrEmpty(request.PhoneNumber) || string.IsNullOrEmpty(request.Email)
-            || string.IsNullOrEmpty(request.Address) || string.IsNullOrEmpty(request.AvatarUrl))
-            {
-                return Result.Failure<Guid>(DomainErrors.Information.Empty);
-            }
-
             if (await _userRepository.GetByEmailAsync(request.Email, cancellationToken) is not null)
             {
-                return Result.Failure<Guid>(DomainErrors.UserDuplicateEmail.DuplicateEmail);
+                return Result.Failure<Guid>(DomainErrors.User.DuplicateEmail);
             }
 
             var user = User.Create(request.PhoneNumber, request.Address, request.AvatarUrl,

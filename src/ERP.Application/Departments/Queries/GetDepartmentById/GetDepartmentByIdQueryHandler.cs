@@ -27,7 +27,7 @@ namespace ERP.Application.Departments.Queries.GetDepartmentById
             if (query is null)
             {
 
-                return Result.Failure<DepartmentByIdReponse>(DomainErrors.DepartmentNotFound.NotFound);
+                return Result.Failure<DepartmentByIdReponse>(DomainErrors.Department.NotFound);
             }
 
             var responseQuery = new DepartmentByIdReponse

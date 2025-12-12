@@ -1,7 +1,9 @@
 export
 pg_dump -U postgres -h localhost -F p -C -f "C:\Users\ADMIN\Desktop\script.sql" erp
 
+pg_dump -U postgres -h localhost -F p -C -f "C:\Users\ADMIN\Downloads\script.sql" erp
 
 import
 psql -U postgres -f "C:\Users\ADMIN\Desktop\script.sql"
 
+psql -U postgres -f "C:\Users\Admin\Downloads\script.sql"

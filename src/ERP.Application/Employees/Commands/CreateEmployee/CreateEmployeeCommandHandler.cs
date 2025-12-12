@@ -25,33 +25,15 @@ namespace ERP.Application.Employees.Commands.CreateEmployee
         }
         public async Task<Result<Guid>> Handle(CreateEmployeeCommand request, CancellationToken cancellationToken)
         {
-            if (request.DepartmentId == null
-            || string.IsNullOrWhiteSpace(request.FirstName)
-            || string.IsNullOrWhiteSpace(request.LastName)
-            || string.IsNullOrWhiteSpace(request.Position)
-            || request.HireDate == null
-            || request.DateOfBirth == null
-            || string.IsNullOrWhiteSpace(request.Status)
-            || string.IsNullOrWhiteSpace(request.Gender)
-            || request.Salary == null
-            || string.IsNullOrWhiteSpace(request.PhoneNumber)
-            || string.IsNullOrWhiteSpace(request.Address)
-            || string.IsNullOrWhiteSpace(request.AvatarUrl)
-            || string.IsNullOrWhiteSpace(request.Email)
-            || string.IsNullOrWhiteSpace(request.Password))
-            {
-                return Result.Failure<Guid>(DomainErrors.Information.Empty);
-            }
-
             if (await _userRepository.GetByEmailAsync(request.Email, cancellationToken) is not null)
             {
-                return Result.Failure<Guid>(DomainErrors.UserDuplicateEmail.DuplicateEmail);
+                return Result.Failure<Guid>(DomainErrors.User.DuplicateEmail);
             }
 
             var departmentExists = await _mediator.Send(new GetDepartmentByIdQuery(request.DepartmentId.Value), cancellationToken);
             if (departmentExists.IsFailure)
             {
-                return Result.Failure<Guid>(DomainErrors.DepartmentNotFound.NotFound);
+                return Result.Failure<Guid>(DomainErrors.Department.NotFound);
             }
 
             var user = await _mediator

@@ -19,9 +19,9 @@ namespace ERP.Application.Attributes.Queries.GetAttributes
         }
         public async Task<Result<List<AttributeResponse>>> Handle(GetAttributesQuery request, CancellationToken cancellationToken)
         {
-            var query = _readDbContext.AttributeValues
+            var query = await _readDbContext.AttributeValues
                             .Include(c => c.Attribute)
-                            .AsQueryable();
+                            .ToListAsync(cancellationToken);
 
             var responseQuery = query
                 .GroupBy(x => new { x.Attribute.Id, x.Attribute.Name })

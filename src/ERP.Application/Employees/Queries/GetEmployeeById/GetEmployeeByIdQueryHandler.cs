@@ -30,7 +30,7 @@ namespace ERP.Application.Employees.Queries.GetEmployeeById
             if (query is null)
             {
 
-                return Result.Failure<EmployeeByIdResponse>(DomainErrors.EmployeeNotFound.NotFound);
+                return Result.Failure<EmployeeByIdResponse>(DomainErrors.Employee.NotFound);
             }
 
             var responseQuery = new EmployeeByIdResponse

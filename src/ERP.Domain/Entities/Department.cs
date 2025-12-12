@@ -7,7 +7,7 @@ namespace ERP.Domain.Entities
         public string Name { get; private set; }
         public List<string> Positions { get; set; } = new();
         public List<Employee> Employees { get; set; } = new();
-        public Guid EmployeeId { get; private set; }
+        public Guid? EmployeeId { get; private set; }
         public Employee? Employee { get; private set; }
         private Department(Guid id, string name) : base(id)
         {

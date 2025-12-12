@@ -29,7 +29,7 @@ namespace ERP.Application.Users.Queries.GetUserById
             if (query is null)
             {
 
-                return Result.Failure<UserByIdResponse>(DomainErrors.UserNotFound.NotFound);
+                return Result.Failure<UserByIdResponse>(DomainErrors.User.NotFound);
             }
 
             var responseQuery = new UserByIdResponse

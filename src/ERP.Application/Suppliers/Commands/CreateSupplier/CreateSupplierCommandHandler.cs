@@ -24,17 +24,13 @@ namespace ERP.Application.Suppliers.Commands.CreateSupplier
         }
         public async Task<Result<Guid>> Handle(CreateSupplierCommand request, CancellationToken cancellationToken)
         {
-            if (string.IsNullOrEmpty(request.CompanyName))
-            {
-                return Result.Failure<Guid>(DomainErrors.Information.Empty);
-            }
 
             if (request.UserId.HasValue)
             {
                 var userExists = await _mediator.Send(new GetUserByIdQuery(request.UserId.Value), cancellationToken);
                 if (userExists.IsFailure)
                 {
-                    return Result.Failure<Guid>(DomainErrors.UserNotFound.NotFound);
+                    return Result.Failure<Guid>(DomainErrors.User.NotFound);
                 }
                 else
                 {
@@ -46,16 +42,9 @@ namespace ERP.Application.Suppliers.Commands.CreateSupplier
             }
             else
             {
-                if (string.IsNullOrEmpty(request.Email) || string.IsNullOrEmpty(request.PhoneNumber)
-                    || string.IsNullOrEmpty(request.Address)
-                    || string.IsNullOrEmpty(request.AvatarUrl))
-                {
-                    return Result.Failure<Guid>(DomainErrors.Information.Empty);
-                }
-
                 if (await _userRepository.GetByEmailAsync(request.Email, cancellationToken) is not null)
                 {
-                    return Result.Failure<Guid>(DomainErrors.UserDuplicateEmail.DuplicateEmail);
+                    return Result.Failure<Guid>(DomainErrors.User.DuplicateEmail);
                 }
                 var user = await _mediator.Send(new CreateUserCommand(
                     request.PhoneNumber!,
