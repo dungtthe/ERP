@@ -19,7 +19,7 @@ namespace ERP.API.Controllers
         {
             var query = new GetAttributesQuery();
             var result = await _sender.Send(query);
-            return Ok(result);
+            return Ok(result.Value);
         }
     }
 }
