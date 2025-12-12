@@ -12,5 +12,7 @@ namespace ERP.Domain.Entities
         public Guid AttributeId { get; set; }
         public Attribute Attribute { get; set; }
         public string Value { get; set; }
+
+        public AttributeValue(Guid id):base(id) { }
     }
 }
