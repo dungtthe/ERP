@@ -23,5 +23,7 @@ namespace ERP.Domain.Entities
         public bool CanBeSold { get; set; }
         public bool CanBePurchased { get; set; }
         public bool CanBeManufactured { get; set; }
+        public decimal PriceReference { get; set; }
+        public decimal CostPrice { get; set; }
     }
 }

@@ -23,11 +23,11 @@ namespace ERP.Infrastructure.Persistence.Configurations
                 .HasMaxLength(100)
                 .HasColumnName("code");
 
-            builder.Property(x => x.ProductVariantRoutingId)
+            builder.Property(x => x.RoutingId)
                 .HasColumnName("routing_id");
 
-            builder.Property(x => x.QuantityToProduce).HasColumnName("qty_to_produce");
-            builder.Property(x => x.QuantityProduced).HasColumnName("qty_produced");
+            builder.Property(x => x.QuantityToProduce).HasColumnName("qty_to_produce").HasColumnType("numeric(18,4)");
+            builder.Property(x => x.QuantityProduced).HasColumnName("qty_produced").HasColumnType("numeric(18,4)");
 
             builder.Property(x => x.ManufacturingOrderStatus)
                 .HasColumnName("status")
@@ -36,9 +36,9 @@ namespace ERP.Infrastructure.Persistence.Configurations
             builder.Property(x => x.StartDate).HasColumnName("start_date");
             builder.Property(x => x.EndDate).HasColumnName("end_date");
 
-            builder.HasOne(x => x.ProductVariantRouting)
+            builder.HasOne(x => x.Routing)
                 .WithMany()
-                .HasForeignKey(x => x.ProductVariantRoutingId)
+                .HasForeignKey(x => x.RoutingId)
                 .OnDelete(DeleteBehavior.Restrict)
                 .HasConstraintName("fk_mo_routing");
         }

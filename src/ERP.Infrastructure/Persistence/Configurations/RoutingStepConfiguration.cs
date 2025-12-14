@@ -26,11 +26,14 @@ namespace ERP.Infrastructure.Persistence.Configurations
                 .HasColumnName("operation_name");
 
             builder.Property(x => x.OperationTime)
-                .HasColumnName("operation_time");
+                .HasColumnName("operation_time").HasColumnType("numeric(18,4)");
 
             builder.Property(x => x.Images)
                 .HasColumnType("text[]")
                 .HasColumnName("images");
+            builder.Property(x => x.ApplyToAttributeValueIds)
+               .HasColumnName("apply_to_attribute_value_ids")
+               .HasColumnType("uuid[]");
 
             builder.Property(x => x.Note).HasColumnName("note");
 

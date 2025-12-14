@@ -20,8 +20,11 @@ namespace ERP.Infrastructure.Persistence.Configurations
 
             builder.Property(x => x.BillOfMaterialId).HasColumnName("bom_id");
             builder.Property(x => x.MaterialId).HasColumnName("material_id");
-            builder.Property(x => x.QuantityRequired).HasColumnName("quantity_required");
+            builder.Property(x => x.QuantityRequired).HasColumnName("quantity_required").HasColumnType("numeric(18,4)");
             builder.Property(x => x.UnitOfMeasureId).HasColumnName("uom_id");
+            builder.Property(x => x.ApplyToAttributeValueIds)
+                .HasColumnName("apply_to_attribute_value_ids")
+                .HasColumnType("uuid[]");
 
             builder.HasOne(x => x.BillOfMaterial)
                 .WithMany()
@@ -40,6 +43,8 @@ namespace ERP.Infrastructure.Persistence.Configurations
                 .HasForeignKey(x => x.UnitOfMeasureId)
                 .OnDelete(DeleteBehavior.Restrict)
                 .HasConstraintName("fk_bomi_uom");
+
+
         }
     }
 }

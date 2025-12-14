@@ -72,7 +72,11 @@ namespace ERP.Infrastructure.Persistence.Migrations
                         .HasColumnType("uuid")
                         .HasColumnName("id");
 
-                    b.Property<Guid>("ProductVariantId")
+                    b.Property<Guid>("ProductId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("product_id");
+
+                    b.Property<Guid?>("ProductVariantId")
                         .HasColumnType("uuid")
                         .HasColumnName("product_variant_id");
 
@@ -81,6 +85,8 @@ namespace ERP.Infrastructure.Persistence.Migrations
                         .HasColumnName("version");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
 
                     b.HasIndex("ProductVariantId");
 
@@ -94,6 +100,11 @@ namespace ERP.Infrastructure.Persistence.Migrations
                         .HasColumnType("uuid")
                         .HasColumnName("id");
 
+                    b.Property<List<Guid>>("ApplyToAttributeValueIds")
+                        .IsRequired()
+                        .HasColumnType("uuid[]")
+                        .HasColumnName("apply_to_attribute_value_ids");
+
                     b.Property<Guid>("BillOfMaterialId")
                         .HasColumnType("uuid")
                         .HasColumnName("bom_id");
@@ -102,8 +113,8 @@ namespace ERP.Infrastructure.Persistence.Migrations
                         .HasColumnType("uuid")
                         .HasColumnName("material_id");
 
-                    b.Property<double>("QuantityRequired")
-                        .HasColumnType("double precision")
+                    b.Property<decimal>("QuantityRequired")
+                        .HasColumnType("numeric(18,4)")
                         .HasColumnName("quantity_required");
 
                     b.Property<Guid>("UnitOfMeasureId")
@@ -183,7 +194,7 @@ namespace ERP.Infrastructure.Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<Guid>("EmployeeId")
+                    b.Property<Guid?>("EmployeeId")
                         .HasMaxLength(200)
                         .HasColumnType("uuid")
                         .HasColumnName("employee_id");
@@ -251,7 +262,7 @@ namespace ERP.Infrastructure.Persistence.Migrations
                         .HasColumnName("position");
 
                     b.Property<decimal>("Salary")
-                        .HasColumnType("decimal(18,2)")
+                        .HasColumnType("numeric(18,4)")
                         .HasColumnName("salary");
 
                     b.Property<string>("Status")
@@ -296,17 +307,17 @@ namespace ERP.Infrastructure.Persistence.Migrations
                         .HasColumnType("smallint")
                         .HasColumnName("status");
 
-                    b.Property<Guid>("ProductVariantRoutingId")
-                        .HasColumnType("uuid")
-                        .HasColumnName("routing_id");
-
-                    b.Property<int>("QuantityProduced")
-                        .HasColumnType("integer")
+                    b.Property<decimal>("QuantityProduced")
+                        .HasColumnType("numeric(18,4)")
                         .HasColumnName("qty_produced");
 
-                    b.Property<int>("QuantityToProduce")
-                        .HasColumnType("integer")
+                    b.Property<decimal>("QuantityToProduce")
+                        .HasColumnType("numeric(18,4)")
                         .HasColumnName("qty_to_produce");
+
+                    b.Property<Guid>("RoutingId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("routing_id");
 
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("timestamp with time zone")
@@ -314,7 +325,7 @@ namespace ERP.Infrastructure.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ProductVariantRoutingId");
+                    b.HasIndex("RoutingId");
 
                     b.ToTable("manufacturing_orders", (string)null);
                 });
@@ -344,6 +355,10 @@ namespace ERP.Infrastructure.Persistence.Migrations
                         .HasColumnType("character varying(100)")
                         .HasColumnName("code");
 
+                    b.Property<decimal>("CostPrice")
+                        .HasColumnType("numeric(18,4)")
+                        .HasColumnName("cost_price");
+
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasMaxLength(2000)
@@ -360,6 +375,10 @@ namespace ERP.Infrastructure.Persistence.Migrations
                         .HasMaxLength(255)
                         .HasColumnType("character varying(255)")
                         .HasColumnName("name");
+
+                    b.Property<decimal>("PriceReference")
+                        .HasColumnType("numeric(18,4)")
+                        .HasColumnName("price_reference");
 
                     b.Property<byte>("ProductType")
                         .HasColumnType("smallint")
@@ -404,12 +423,12 @@ namespace ERP.Infrastructure.Persistence.Migrations
                         .HasColumnType("uuid")
                         .HasColumnName("id");
 
-                    b.Property<decimal>("CostPrice")
-                        .HasColumnType("numeric(18,2)")
+                    b.Property<decimal?>("CostPrice")
+                        .HasColumnType("numeric(18,4)")
                         .HasColumnName("cost_price");
 
-                    b.Property<int>("Height")
-                        .HasColumnType("integer")
+                    b.Property<decimal>("Height")
+                        .HasColumnType("numeric(18,4)")
                         .HasColumnName("height");
 
                     b.Property<List<string>>("Images")
@@ -417,8 +436,8 @@ namespace ERP.Infrastructure.Persistence.Migrations
                         .HasColumnType("text[]")
                         .HasColumnName("images");
 
-                    b.Property<int>("Length")
-                        .HasColumnType("integer")
+                    b.Property<decimal>("Length")
+                        .HasColumnType("numeric(18,4)")
                         .HasColumnName("length");
 
                     b.Property<string>("Name")
@@ -427,8 +446,8 @@ namespace ERP.Infrastructure.Persistence.Migrations
                         .HasColumnType("character varying(255)")
                         .HasColumnName("name");
 
-                    b.Property<decimal>("PriceReference")
-                        .HasColumnType("numeric(18,2)")
+                    b.Property<decimal?>("PriceReference")
+                        .HasColumnType("numeric(18,4)")
                         .HasColumnName("price_reference");
 
                     b.Property<Guid>("ProductId")
@@ -441,16 +460,16 @@ namespace ERP.Infrastructure.Persistence.Migrations
                         .HasColumnType("character varying(100)")
                         .HasColumnName("sku");
 
-                    b.Property<int>("Volume")
-                        .HasColumnType("integer")
+                    b.Property<decimal>("Volume")
+                        .HasColumnType("numeric(18,4)")
                         .HasColumnName("volume");
 
-                    b.Property<int>("Weight")
-                        .HasColumnType("integer")
+                    b.Property<decimal>("Weight")
+                        .HasColumnType("numeric(18,4)")
                         .HasColumnName("weight");
 
-                    b.Property<int>("Width")
-                        .HasColumnType("integer")
+                    b.Property<decimal>("Width")
+                        .HasColumnType("numeric(18,4)")
                         .HasColumnName("width");
 
                     b.HasKey("Id");
@@ -515,6 +534,11 @@ namespace ERP.Infrastructure.Persistence.Migrations
                         .HasColumnType("uuid")
                         .HasColumnName("id");
 
+                    b.Property<List<Guid>>("ApplyToAttributeValueIds")
+                        .IsRequired()
+                        .HasColumnType("uuid[]")
+                        .HasColumnName("apply_to_attribute_value_ids");
+
                     b.Property<List<string>>("Images")
                         .IsRequired()
                         .HasColumnType("text[]")
@@ -531,8 +555,8 @@ namespace ERP.Infrastructure.Persistence.Migrations
                         .HasColumnType("character varying(255)")
                         .HasColumnName("operation_name");
 
-                    b.Property<double>("OperationTime")
-                        .HasColumnType("double precision")
+                    b.Property<decimal>("OperationTime")
+                        .HasColumnType("numeric(18,4)")
                         .HasColumnName("operation_time");
 
                     b.Property<Guid>("RoutingId")
@@ -647,7 +671,7 @@ namespace ERP.Infrastructure.Persistence.Migrations
                         .HasColumnName("id");
 
                     b.Property<decimal>("CostPerHour")
-                        .HasColumnType("numeric(18,2)")
+                        .HasColumnType("numeric(18,4)")
                         .HasColumnName("cost_per_hour");
 
                     b.Property<string>("Description")
@@ -669,23 +693,29 @@ namespace ERP.Infrastructure.Persistence.Migrations
 
             modelBuilder.Entity("ERP.Domain.Entities.WorkOrder", b =>
                 {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
                     b.Property<Guid>("ManufacturingOrderId")
                         .HasColumnType("uuid")
                         .HasColumnName("mo_id");
-
-                    b.Property<Guid>("WorkCenterId")
-                        .HasColumnType("uuid")
-                        .HasColumnName("work_center_id");
 
                     b.Property<Guid>("RoutingStepId")
                         .HasColumnType("uuid")
                         .HasColumnName("routing_step_id");
 
-                    b.HasKey("ManufacturingOrderId", "WorkCenterId", "RoutingStepId");
+                    b.Property<Guid>("WorkCenterId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("work_center_id");
+
+                    b.HasKey("Id");
 
                     b.HasIndex("RoutingStepId");
 
                     b.HasIndex("WorkCenterId");
+
+                    b.HasIndex("ManufacturingOrderId", "WorkCenterId", "RoutingStepId");
 
                     b.ToTable("work_orders", (string)null);
                 });
@@ -704,12 +734,20 @@ namespace ERP.Infrastructure.Persistence.Migrations
 
             modelBuilder.Entity("ERP.Domain.Entities.BillOfMaterial", b =>
                 {
+                    b.HasOne("ERP.Domain.Entities.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired()
+                        .HasConstraintName("fk_bom_product");
+
                     b.HasOne("ERP.Domain.Entities.ProductVariant", "ProductVariant")
                         .WithMany()
                         .HasForeignKey("ProductVariantId")
                         .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired()
                         .HasConstraintName("fk_bom_product_variant");
+
+                    b.Navigation("Product");
 
                     b.Navigation("ProductVariant");
                 });
@@ -773,7 +811,6 @@ namespace ERP.Infrastructure.Persistence.Migrations
                         .WithOne()
                         .HasForeignKey("ERP.Domain.Entities.Department", "EmployeeId")
                         .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired()
                         .HasConstraintName("FK_Departments_Employees");
 
                     b.Navigation("Employee");
@@ -802,14 +839,14 @@ namespace ERP.Infrastructure.Persistence.Migrations
 
             modelBuilder.Entity("ERP.Domain.Entities.ManufacturingOrder", b =>
                 {
-                    b.HasOne("ERP.Domain.Entities.Routing", "ProductVariantRouting")
+                    b.HasOne("ERP.Domain.Entities.Routing", "Routing")
                         .WithMany()
-                        .HasForeignKey("ProductVariantRoutingId")
+                        .HasForeignKey("RoutingId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired()
                         .HasConstraintName("fk_mo_routing");
 
-                    b.Navigation("ProductVariantRouting");
+                    b.Navigation("Routing");
                 });
 
             modelBuilder.Entity("ERP.Domain.Entities.Product", b =>

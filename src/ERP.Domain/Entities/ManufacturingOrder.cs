@@ -12,10 +12,10 @@ namespace ERP.Domain.Entities
     {
         public ManufacturingOrder(Guid id):base(id) { }
         public string Code { get; set; }
-        public Guid ProductVariantRoutingId { get; set; }
-        public Routing ProductVariantRouting { get; set; }
-        public int QuantityToProduce { get; set; }
-        public int QuantityProduced { get; set; }
+        public Guid RoutingId { get; set; }
+        public Routing Routing { get; set; }
+        public decimal QuantityToProduce { get; set; }
+        public decimal QuantityProduced { get; set; }
         public ManufacturingOrderStatus ManufacturingOrderStatus { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }

@@ -45,6 +45,14 @@ namespace ERP.Infrastructure.Persistence.Configurations
                 .HasColumnName("product_type")
                 .HasConversion<byte>();
 
+            builder.Property(x => x.PriceReference)
+                .HasColumnType("numeric(18,4)")
+                .HasColumnName("price_reference");
+
+            builder.Property(x => x.CostPrice)
+                .HasColumnType("numeric(18,4)")
+                .HasColumnName("cost_price");
+
             builder.Property(x => x.CanBeSold).HasColumnName("can_be_sold");
             builder.Property(x => x.CanBePurchased).HasColumnName("can_be_purchased");
             builder.Property(x => x.CanBeManufactured).HasColumnName("can_be_manufactured");

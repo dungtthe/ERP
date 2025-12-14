@@ -81,7 +81,7 @@ namespace ERP.Infrastructure.Persistence.Migrations
                     id = table.Column<Guid>(type: "uuid", nullable: false),
                     name = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: false),
                     description = table.Column<string>(type: "character varying(2000)", maxLength: 2000, nullable: false),
-                    cost_per_hour = table.Column<decimal>(type: "numeric(18,2)", nullable: false)
+                    cost_per_hour = table.Column<decimal>(type: "numeric(18,4)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -120,7 +120,9 @@ namespace ERP.Infrastructure.Persistence.Migrations
                     product_type = table.Column<byte>(type: "smallint", nullable: false),
                     can_be_sold = table.Column<bool>(type: "boolean", nullable: false),
                     can_be_purchased = table.Column<bool>(type: "boolean", nullable: false),
-                    can_be_manufactured = table.Column<bool>(type: "boolean", nullable: false)
+                    can_be_manufactured = table.Column<bool>(type: "boolean", nullable: false),
+                    price_reference = table.Column<decimal>(type: "numeric(18,4)", nullable: false),
+                    cost_price = table.Column<decimal>(type: "numeric(18,4)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -204,13 +206,13 @@ namespace ERP.Infrastructure.Persistence.Migrations
                     sku = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
                     name = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: false),
                     images = table.Column<List<string>>(type: "text[]", nullable: false),
-                    price_reference = table.Column<decimal>(type: "numeric(18,2)", nullable: false),
-                    cost_price = table.Column<decimal>(type: "numeric(18,2)", nullable: false),
-                    weight = table.Column<int>(type: "integer", nullable: false),
-                    length = table.Column<int>(type: "integer", nullable: false),
-                    width = table.Column<int>(type: "integer", nullable: false),
-                    height = table.Column<int>(type: "integer", nullable: false),
-                    volume = table.Column<int>(type: "integer", nullable: false)
+                    price_reference = table.Column<decimal>(type: "numeric(18,4)", nullable: true),
+                    cost_price = table.Column<decimal>(type: "numeric(18,4)", nullable: true),
+                    weight = table.Column<decimal>(type: "numeric(18,4)", nullable: false),
+                    length = table.Column<decimal>(type: "numeric(18,4)", nullable: false),
+                    width = table.Column<decimal>(type: "numeric(18,4)", nullable: false),
+                    height = table.Column<decimal>(type: "numeric(18,4)", nullable: false),
+                    volume = table.Column<decimal>(type: "numeric(18,4)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -228,12 +230,19 @@ namespace ERP.Infrastructure.Persistence.Migrations
                 columns: table => new
                 {
                     id = table.Column<Guid>(type: "uuid", nullable: false),
-                    product_variant_id = table.Column<Guid>(type: "uuid", nullable: false),
+                    product_id = table.Column<Guid>(type: "uuid", nullable: false),
+                    product_variant_id = table.Column<Guid>(type: "uuid", nullable: true),
                     version = table.Column<byte>(type: "smallint", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_bill_of_materials", x => x.id);
+                    table.ForeignKey(
+                        name: "fk_bom_product",
+                        column: x => x.product_id,
+                        principalTable: "products",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "fk_bom_product_variant",
                         column: x => x.product_variant_id,
@@ -273,8 +282,9 @@ namespace ERP.Infrastructure.Persistence.Migrations
                     id = table.Column<Guid>(type: "uuid", nullable: false),
                     bom_id = table.Column<Guid>(type: "uuid", nullable: false),
                     material_id = table.Column<Guid>(type: "uuid", nullable: false),
-                    quantity_required = table.Column<double>(type: "double precision", nullable: false),
-                    uom_id = table.Column<Guid>(type: "uuid", nullable: false)
+                    quantity_required = table.Column<decimal>(type: "numeric(18,4)", nullable: false),
+                    uom_id = table.Column<Guid>(type: "uuid", nullable: false),
+                    apply_to_attribute_value_ids = table.Column<List<Guid>>(type: "uuid[]", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -326,8 +336,8 @@ namespace ERP.Infrastructure.Persistence.Migrations
                     id = table.Column<Guid>(type: "uuid", nullable: false),
                     code = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
                     routing_id = table.Column<Guid>(type: "uuid", nullable: false),
-                    qty_to_produce = table.Column<int>(type: "integer", nullable: false),
-                    qty_produced = table.Column<int>(type: "integer", nullable: false),
+                    qty_to_produce = table.Column<decimal>(type: "numeric(18,4)", nullable: false),
+                    qty_produced = table.Column<decimal>(type: "numeric(18,4)", nullable: false),
                     status = table.Column<byte>(type: "smallint", nullable: false),
                     start_date = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     end_date = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
@@ -351,9 +361,10 @@ namespace ERP.Infrastructure.Persistence.Migrations
                     routing_id = table.Column<Guid>(type: "uuid", nullable: false),
                     step_order = table.Column<byte>(type: "smallint", nullable: false),
                     operation_name = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: false),
-                    operation_time = table.Column<double>(type: "double precision", nullable: false),
+                    operation_time = table.Column<decimal>(type: "numeric(18,4)", nullable: false),
                     images = table.Column<List<string>>(type: "text[]", nullable: false),
-                    note = table.Column<string>(type: "text", nullable: false)
+                    note = table.Column<string>(type: "text", nullable: false),
+                    apply_to_attribute_value_ids = table.Column<List<Guid>>(type: "uuid[]", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -370,13 +381,14 @@ namespace ERP.Infrastructure.Persistence.Migrations
                 name: "work_orders",
                 columns: table => new
                 {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
                     mo_id = table.Column<Guid>(type: "uuid", nullable: false),
                     work_center_id = table.Column<Guid>(type: "uuid", nullable: false),
                     routing_step_id = table.Column<Guid>(type: "uuid", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_work_orders", x => new { x.mo_id, x.work_center_id, x.routing_step_id });
+                    table.PrimaryKey("PK_work_orders", x => x.Id);
                     table.ForeignKey(
                         name: "fk_wo_mo",
                         column: x => x.mo_id,
@@ -404,7 +416,7 @@ namespace ERP.Infrastructure.Persistence.Migrations
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
                     positions = table.Column<List<string>>(type: "text[]", nullable: false),
-                    employee_id = table.Column<Guid>(type: "uuid", maxLength: 200, nullable: false)
+                    employee_id = table.Column<Guid>(type: "uuid", maxLength: 200, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -423,7 +435,7 @@ namespace ERP.Infrastructure.Persistence.Migrations
                     date_of_birth = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     status = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
                     gender = table.Column<string>(type: "character varying(10)", maxLength: 10, nullable: false),
-                    salary = table.Column<decimal>(type: "numeric(18,2)", nullable: false),
+                    salary = table.Column<decimal>(type: "numeric(18,4)", nullable: false),
                     user_id = table.Column<Guid>(type: "uuid", maxLength: 200, nullable: false),
                     department_id = table.Column<Guid>(type: "uuid", maxLength: 200, nullable: false)
                 },
@@ -463,6 +475,11 @@ namespace ERP.Infrastructure.Persistence.Migrations
                 name: "IX_bill_of_material_items_uom_id",
                 table: "bill_of_material_items",
                 column: "uom_id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_bill_of_materials_product_id",
+                table: "bill_of_materials",
+                column: "product_id");
 
             migrationBuilder.CreateIndex(
                 name: "IX_bill_of_materials_product_variant_id",
@@ -555,6 +572,11 @@ namespace ERP.Infrastructure.Persistence.Migrations
                 table: "users",
                 column: "email",
                 unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_work_orders_mo_id_work_center_id_routing_step_id",
+                table: "work_orders",
+                columns: new[] { "mo_id", "work_center_id", "routing_step_id" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_work_orders_routing_step_id",

@@ -14,8 +14,9 @@ namespace ERP.Domain.Entities
         public BillOfMaterial BillOfMaterial { get; set; }
         public Guid MaterialId { get; set; }
         public ProductVariant Material { get; set; }
-        public double QuantityRequired { get; set; }
+        public decimal QuantityRequired { get; set; }
         public Guid UnitOfMeasureId { get; set; }
         public UnitOfMeasure UnitOfMeasure { get; set; }
+        public List<Guid> ApplyToAttributeValueIds { get; set; } = new();
     }
 }

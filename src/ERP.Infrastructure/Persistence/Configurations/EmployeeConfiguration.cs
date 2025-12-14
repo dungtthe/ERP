@@ -50,7 +50,7 @@ namespace ERP.Infrastructure.Persistence.Configurations
 
             builder.Property(e => e.Salary)
                 .IsRequired()
-                .HasColumnType("decimal(18,2)")
+                .HasColumnType("numeric(18,4)")
                 .HasColumnName("salary");
 
             builder.Property(x => x.UserId)

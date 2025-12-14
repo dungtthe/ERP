@@ -10,8 +10,12 @@ namespace ERP.Domain.Entities
     public class BillOfMaterial:Entity
     {
         public BillOfMaterial(Guid id):base(id) { }
-        public Guid ProductVariantId { get; set; }
-        public ProductVariant ProductVariant { get; set; }
+        public Guid ProductId { get; set; }
+        public Product Product { get; set; }
+
+        public Guid? ProductVariantId { get; set; }
+        public ProductVariant? ProductVariant { get; set; }
+
         public byte Version { get; set; }
     }
 }

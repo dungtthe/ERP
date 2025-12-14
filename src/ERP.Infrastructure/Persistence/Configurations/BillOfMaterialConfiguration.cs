@@ -18,17 +18,26 @@ namespace ERP.Infrastructure.Persistence.Configurations
             builder.HasKey(x => x.Id);
             builder.Property(x => x.Id).HasColumnName("id");
 
+            builder.Property(x => x.ProductId)
+                .HasColumnName("product_id");
+
             builder.Property(x => x.ProductVariantId)
-                .HasColumnName("product_variant_id");
+              .HasColumnName("product_variant_id");
 
             builder.Property(x => x.Version)
                 .HasColumnName("version");
 
-            builder.HasOne(x => x.ProductVariant)
+            builder.HasOne(x => x.Product)
                 .WithMany()
-                .HasForeignKey(x => x.ProductVariantId)
+                .HasForeignKey(x => x.ProductId)
                 .OnDelete(DeleteBehavior.Restrict)
-                .HasConstraintName("fk_bom_product_variant");
+                .HasConstraintName("fk_bom_product");
+
+            builder.HasOne(x => x.ProductVariant)
+               .WithMany()
+               .HasForeignKey(x => x.ProductVariantId)
+               .OnDelete(DeleteBehavior.Restrict)
+               .HasConstraintName("fk_bom_product_variant");
         }
     }
 }

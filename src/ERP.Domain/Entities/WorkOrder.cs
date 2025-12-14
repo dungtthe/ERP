@@ -7,8 +7,11 @@ using System.Threading.Tasks;
 
 namespace ERP.Domain.Entities
 {
-    public class WorkOrder
+    public class WorkOrder:Entity
     {
+
+        public WorkOrder(Guid id):base(id) { }
+
         public Guid ManufacturingOrderId { get; set; }
         public ManufacturingOrder ManufacturingOrder { get; set; }
         public Guid WorkCenterId { get; set; }

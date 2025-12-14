@@ -18,12 +18,12 @@ namespace ERP.Domain.Entities
         public string SKU { get; set; }
         public string Name { get; set; }
         public List<string> Images { get; set; } = new();
-        public decimal PriceReference { get; set; }
-        public decimal CostPrice { get; set; }
-        public int Weight { get; set; }
-        public int Length { get; set; }
-        public int Width { get; set; }
-        public int Height { get; set; }
-        public int Volume { get; set; }
+        public decimal ?PriceReference { get; set; }
+        public decimal ?CostPrice { get; set; }
+        public decimal Weight { get; set; }
+        public decimal Length { get; set; }
+        public decimal Width { get; set; }
+        public decimal Height { get; set; }
+        public decimal Volume { get; set; }
     }
 }

@@ -14,8 +14,10 @@ namespace ERP.Domain.Entities
         public Routing Routing { get; set; }
         public byte StepOrder { get; set; }
         public string OperationName { get; set; }
-        public double OperationTime { get; set; }
+        public decimal OperationTime { get; set; }
         public List<string> Images { get; set; } = new();
         public string Note {  get; set; }
+
+        public List<Guid> ApplyToAttributeValueIds { get; set; } = new();
     }
 }

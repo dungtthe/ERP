@@ -37,18 +37,19 @@ namespace ERP.Infrastructure.Persistence.Configurations
                 .HasColumnName("images");
 
             builder.Property(x => x.PriceReference)
-                .HasColumnType("numeric(18,2)")
+                .HasColumnType("numeric(18,4)")
                 .HasColumnName("price_reference");
 
             builder.Property(x => x.CostPrice)
-                .HasColumnType("numeric(18,2)")
+                .HasColumnType("numeric(18,4)")
                 .HasColumnName("cost_price");
 
-            builder.Property(x => x.Weight).HasColumnName("weight");
-            builder.Property(x => x.Length).HasColumnName("length");
-            builder.Property(x => x.Width).HasColumnName("width");
-            builder.Property(x => x.Height).HasColumnName("height");
-            builder.Property(x => x.Volume).HasColumnName("volume");
+
+            builder.Property(x => x.Weight).HasColumnName("weight").HasColumnType("numeric(18,4)");
+            builder.Property(x => x.Length).HasColumnName("length").HasColumnType("numeric(18,4)");
+            builder.Property(x => x.Width).HasColumnName("width").HasColumnType("numeric(18,4)");
+            builder.Property(x => x.Height).HasColumnName("height").HasColumnType("numeric(18,4)");
+            builder.Property(x => x.Volume).HasColumnName("volume").HasColumnType("numeric(18,4)");
 
             builder.HasOne(x => x.Product)
                 .WithMany()

@@ -15,7 +15,9 @@ namespace ERP.Infrastructure.Persistence.Configurations
         {
             builder.ToTable("work_orders");
 
-            builder.HasKey(x => new { x.ManufacturingOrderId, x.WorkCenterId, x.RoutingStepId });
+            builder.HasKey(x => x.Id);
+
+            builder.HasIndex(x => new { x.ManufacturingOrderId, x.WorkCenterId, x.RoutingStepId });
 
             builder.Property(x => x.ManufacturingOrderId).HasColumnName("mo_id");
             builder.Property(x => x.WorkCenterId).HasColumnName("work_center_id");

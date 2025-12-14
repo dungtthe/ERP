@@ -28,7 +28,7 @@ namespace ERP.Infrastructure.Persistence.Configurations
                 .HasColumnName("description");
 
             builder.Property(x => x.CostPerHour)
-                .HasColumnType("numeric(18,2)")
+                .HasColumnType("numeric(18,4)")
                 .HasColumnName("cost_per_hour");
         }
     }
