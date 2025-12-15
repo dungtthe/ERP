@@ -2,6 +2,7 @@
 using ERP.Common.Helpers;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.StaticFiles;
 
 namespace ERP.API.Controllers
 {
@@ -24,11 +25,7 @@ namespace ERP.API.Controllers
                 return BadRequest(err);
             }
 
-            string pathUpload = "";
-            if (uploadType == UploadType.Product)
-            {
-                pathUpload = Utils.GetPathUploadProducts();
-            }
+            string pathUpload = GetPath(uploadType);
 
             if (string.IsNullOrEmpty(pathUpload))
             {
@@ -56,6 +53,50 @@ namespace ERP.API.Controllers
                 }
             }
             return Ok(savedFileNames);
+        }
+
+        [HttpGet("image")]
+        public IActionResult ViewImage([FromQuery] UploadType uploadType, [FromQuery] string fileName)
+        {
+            string pathUpload = GetPath(uploadType);
+
+            if (string.IsNullOrEmpty(pathUpload))
+            {
+                var err = new { code = "UploadFileError", message = "UploadType không hợp lệ." };
+                return BadRequest(err);
+            }
+
+            var filePath = Path.Combine(pathUpload, fileName);
+
+            if (!System.IO.File.Exists(filePath))
+            {
+                var err = new { code = "UploadFileError", message = "Không tìm thấy ảnh." };
+                return BadRequest(err);
+            }
+
+            var mimeType = GetMimeType(filePath);
+            var stream = new FileStream(filePath, FileMode.Open, FileAccess.Read);
+            return File(stream, mimeType);
+        }
+
+        private string GetMimeType(string path)
+        {
+            var provider = new FileExtensionContentTypeProvider();
+            if (!provider.TryGetContentType(path, out var contentType))
+            {
+                contentType = "application/octet-stream";
+            }
+            return contentType;
+        }
+
+        private string GetPath(UploadType uploadType)
+        {
+            string pathUpload = "";
+            if (uploadType == UploadType.Product)
+            {
+                pathUpload = Utils.GetPathUploadProducts();
+            }
+            return pathUpload;
         }
     }
 }
