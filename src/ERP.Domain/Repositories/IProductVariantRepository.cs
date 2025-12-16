@@ -6,6 +6,6 @@ namespace ERP.Domain.Repositories
     {
         Task AddAsync(ProductVariant productVariant);
         Task<bool> IsSkuExist(string sku);
-
+        void Remove(ProductVariant productVariant);
     }
 }

@@ -1,4 +1,5 @@
-﻿using ERP.Application.Products.Commands.CreateProduct;
+﻿using ERP.Application.Products.Commands.CreateOrUpdateAttribute;
+using ERP.Application.Products.Commands.CreateProduct;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 namespace ERP.API.Controllers
@@ -21,6 +22,17 @@ namespace ERP.API.Controllers
             }
 
             return Ok(new { id = result.Value });
+        }
+
+        [HttpPost("attributes/create-or-update")]
+        public async Task<IActionResult> CreateOrUpdateAttribute([FromBody]CreateOrUpdateAttribute request, CancellationToken cancellationToken)
+        {
+            var rs = await _sender.Send(request, cancellationToken);
+            if (rs.IsFailure)
+            {
+                return BadRequest(rs.Error);
+            }
+            return Ok(new {id = rs.Value});
         }
     }
 }

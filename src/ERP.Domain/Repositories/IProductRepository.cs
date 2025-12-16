@@ -11,5 +11,7 @@ namespace ERP.Domain.Repositories
     {
         Task AddAsync(Product product);
         Task<bool> IsProductExist(Guid productId);
+        Task<Product> GetByIdAsync(Guid productId);
+        Task<bool> HasAttribute(Guid productId);
     }
 }

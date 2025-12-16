@@ -47,6 +47,12 @@ namespace ERP.Domain.Errors
         {
             public static readonly Error NotFound = new Error("Product.NotFound", "Sản phẩm không tồn tại");
             public static readonly Error SkuAlreadyExists = new Error("ProductVariant.SkuAlreadyExists", "SKU đã tồn tại");
+            public static readonly Error CannotAddAttributeWhenVariantsExist = new Error("Product.CannotAddAttributeWhenVariantsExist", "Không thể chỉnh sửa Attribute khi đã có biến thể cho sản phẩm.");
+        }
+
+        public static class Attribute
+        {
+            public static readonly Error NotFound = new Error("Attribute.NotFound", "Thuộc tính không tồn tại");
         }
     }
 }

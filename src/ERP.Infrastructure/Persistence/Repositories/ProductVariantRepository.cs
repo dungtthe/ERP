@@ -30,5 +30,10 @@ namespace ERP.Infrastructure.Persistence.Repositories
         {
             return await _readAppDbContext.ProductVariants.AnyAsync(x => x.SKU == sku);
         }
+
+        public void Remove(ProductVariant productVariant)
+        {
+            _dbContext.ProductVariants.Remove(productVariant);
+        }
     }
 }

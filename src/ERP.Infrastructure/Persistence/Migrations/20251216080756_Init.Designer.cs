@@ -13,7 +13,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace ERP.Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20251214144859_Init")]
+    [Migration("20251216080756_Init")]
     partial class Init
     {
         /// <inheritdoc />
@@ -888,7 +888,7 @@ namespace ERP.Infrastructure.Persistence.Migrations
             modelBuilder.Entity("ERP.Domain.Entities.ProductVariant", b =>
                 {
                     b.HasOne("ERP.Domain.Entities.Product", "Product")
-                        .WithMany()
+                        .WithMany("Variants")
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired()
@@ -987,6 +987,11 @@ namespace ERP.Infrastructure.Persistence.Migrations
             modelBuilder.Entity("ERP.Domain.Entities.Department", b =>
                 {
                     b.Navigation("Employees");
+                });
+
+            modelBuilder.Entity("ERP.Domain.Entities.Product", b =>
+                {
+                    b.Navigation("Variants");
                 });
 #pragma warning restore 612, 618
         }

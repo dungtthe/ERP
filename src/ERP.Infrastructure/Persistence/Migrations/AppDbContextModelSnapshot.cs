@@ -885,7 +885,7 @@ namespace ERP.Infrastructure.Persistence.Migrations
             modelBuilder.Entity("ERP.Domain.Entities.ProductVariant", b =>
                 {
                     b.HasOne("ERP.Domain.Entities.Product", "Product")
-                        .WithMany()
+                        .WithMany("Variants")
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired()
@@ -984,6 +984,11 @@ namespace ERP.Infrastructure.Persistence.Migrations
             modelBuilder.Entity("ERP.Domain.Entities.Department", b =>
                 {
                     b.Navigation("Employees");
+                });
+
+            modelBuilder.Entity("ERP.Domain.Entities.Product", b =>
+                {
+                    b.Navigation("Variants");
                 });
 #pragma warning restore 612, 618
         }
