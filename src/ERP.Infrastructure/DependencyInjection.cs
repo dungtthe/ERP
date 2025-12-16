@@ -39,6 +39,8 @@ namespace ERP.Infrastructure
             services.AddScoped<IAttributeRepository, AttributeRepository>();
             services.AddScoped<IAttributeValueRepository, AttributeValueRepository>();
             services.AddScoped<IProductVariantAttributeValue, ProductVariantAttributeValue>();
+            services.AddScoped<IBillOfMaterialRepository, BillOfMaterialRepository>();
+            services.AddScoped<IBillOfMaterialItemRepository, BillOfMaterialItemRepository>();
 
 
             services.AddScoped<IUserService, UserService>();
