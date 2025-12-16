@@ -57,6 +57,8 @@ namespace ERP.Application.Products.Commands.CreateProduct
                 CanBeSold = request.CanBeSold,
                 CanBeManufactured = request.CanBeManufactured,
                 CanBePurchased = request.CanBePurchased,
+                PriceReference = request.PriceReference,
+                CostPrice = request.CostPrice,
             };
             await _productRepository.AddAsync(newProduct);
             foreach(var categoryId in request.CategoryIds)
@@ -68,6 +70,14 @@ namespace ERP.Application.Products.Commands.CreateProduct
                 };
                 await _productCatergoryRepository.AddAsync(newProductCategory);
             }
+
+            newProduct.AddVariant(new ProductVariant(Guid.NewGuid())
+            {
+                ProductId = newProduct.Id,
+                SKU = newProduct.GenerateSKU(),
+                Name = newProduct.Name,
+                Images = newProduct.Images,
+            });
 
             await _unitOfWork.SaveChangesAsync();
             return newProduct.Id;

@@ -18,5 +18,7 @@ namespace ERP.Application.Products.Commands.CreateProduct
         bool CanBeSold,
         bool CanBePurchased,
         bool CanBeManufactured,
+        decimal PriceReference,
+        decimal CostPrice,
         List<Guid>? CategoryIds) : ICommand<Guid>;
 }

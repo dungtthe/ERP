@@ -27,7 +27,7 @@ namespace ERP.Application.ProductVariants.Commands.CreateProductVariant
             }
             if (await _productVariantRepository.IsSkuExist(request.SKU!))
             {
-                return Result.Failure<Guid>(DomainErrors.ProductVariant.SkuAlreadyExists);
+                return Result.Failure<Guid>(DomainErrors.Product.SkuAlreadyExists);
             }
 
             var productVariant = new ProductVariant(Guid.NewGuid())

@@ -23,6 +23,9 @@ namespace ERP.Application.Products.Commands.CreateProduct
             .NotEmpty();
 
             RuleFor(x=>x.CategoryIds).NotEmpty();
+
+            RuleFor(x => x.PriceReference).GreaterThan(0);
+            RuleFor(x => x.CostPrice).GreaterThan(0);
         }
     }
 }

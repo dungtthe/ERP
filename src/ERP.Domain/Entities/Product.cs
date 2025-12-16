@@ -1,5 +1,7 @@
 ﻿using ERP.Domain.Enums;
+using ERP.Domain.Errors;
 using ERP.Domain.Primitives;
+using ERP.Domain.Shared;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace ERP.Domain.Entities
 {
-    public class Product:Entity
+    public class Product:AggregateRoot
     {
         public Product(Guid id):base(id)
         {
@@ -25,5 +27,24 @@ namespace ERP.Domain.Entities
         public bool CanBeManufactured { get; set; }
         public decimal PriceReference { get; set; }
         public decimal CostPrice { get; set; }
+
+        private readonly List<ProductVariant> _variants = new();
+        public IReadOnlyCollection<ProductVariant> Variants => _variants.AsReadOnly();
+
+        public Result AddVariant(ProductVariant variant)
+        {
+            if (_variants.Any(x => x.SKU == variant.SKU))
+            {
+                return Result.Failure(DomainErrors.Product.SkuAlreadyExists);
+            }
+            _variants.Add(variant);
+            return Result.Success();
+        }
+
+        public string GenerateSKU()
+        {
+            //tam thoi nhu nay
+            return this.Code + _variants.Count.ToString();
+        }
     }
 }

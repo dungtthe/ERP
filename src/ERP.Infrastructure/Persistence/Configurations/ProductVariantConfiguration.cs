@@ -52,7 +52,7 @@ namespace ERP.Infrastructure.Persistence.Configurations
             builder.Property(x => x.Volume).HasColumnName("volume").HasColumnType("numeric(18,4)");
 
             builder.HasOne(x => x.Product)
-                .WithMany()
+                .WithMany(nameof(Product.Variants))
                 .HasForeignKey(x => x.ProductId)
                 .OnDelete(DeleteBehavior.Restrict)
                 .HasConstraintName("fk_product_variants_product");
