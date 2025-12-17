@@ -1,4 +1,5 @@
 using ERP.Application.ProductVariants.Commands.CreateProductVariant;
+using ERP.Application.ProductVariants.Queries.GetProductVariantsByProductIdQuery;
 using ERP.Application.ProductVariants.Queries.GetProductVariantSummaries;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -28,6 +29,19 @@ namespace ERP.API.Controllers
         {
             var query = new GetProductVariantSummariesQuery();
             var result = await _sender.Send(query);
+            return Ok(result.Value);
+        }
+
+
+        [HttpGet("{productId:guid}")]
+        public async Task<IActionResult> GetProductVariantsByProductId([FromRoute] Guid productId)
+        {
+            var query = new GetProductVariantResponseByProductIdQuery(productId);
+            var result = await _sender.Send(query);
+            if (result.IsFailure)
+            {
+                return NotFound(result.Error);
+            }
             return Ok(result.Value);
         }
     }

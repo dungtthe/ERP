@@ -26,6 +26,11 @@ namespace ERP.Infrastructure.Persistence.Repositories
             await _dbContext.ProductVariants.AddAsync(productVariant);
         }
 
+        public async Task<bool> IsProductVariantExist(Guid productVariantId)
+        {
+            return await _readAppDbContext.ProductVariants.AnyAsync(x => x.Id == productVariantId);
+        }
+
         public async Task<bool> IsSkuExist(string sku)
         {
             return await _readAppDbContext.ProductVariants.AnyAsync(x => x.SKU == sku);
