@@ -1,5 +1,6 @@
 ﻿using ERP.Application.Products.Commands.CreateOrUpdateAttribute;
 using ERP.Application.Products.Commands.CreateProduct;
+using ERP.Application.Products.Queries.GetProductGeneralInfoById;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 namespace ERP.API.Controllers
@@ -33,6 +34,17 @@ namespace ERP.API.Controllers
                 return BadRequest(rs.Error);
             }
             return Ok(new {id = rs.Value});
+        }
+
+        [HttpGet("general-info")]
+        public async Task<IActionResult> GetProductGeneralInfo([FromQuery] GetProductGeneralInfoByIdQuery query, CancellationToken cancellationToken)
+        {
+            var rs = await _sender.Send(query,cancellationToken);
+            if (rs.IsFailure)
+            {
+                return BadRequest(rs.Error);
+            }
+            return Ok(rs.Value );
         }
     }
 }
