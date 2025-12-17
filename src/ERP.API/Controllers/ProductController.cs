@@ -2,6 +2,7 @@
 using ERP.Application.Products.Commands.CreateProduct;
 using ERP.Application.Products.Queries.GetAttributesByProductId;
 using ERP.Application.Products.Queries.GetProductGeneralInfoById;
+using ERP.Application.Products.Queries.GetProducts;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 namespace ERP.API.Controllers
@@ -59,6 +60,18 @@ namespace ERP.API.Controllers
                 return BadRequest(rs.Error);
             }
             return Ok(rs.Value);
+        }
+
+
+        [HttpPost("")]
+        public async Task<IActionResult> GetSuppliers([FromBody] GetProductsQuery query)
+        {
+            var result = await _sender.Send(query);
+            if (result.IsFailure)
+            {
+                return BadRequest(result.Error);
+            }
+            return Ok(result.Value);
         }
     }
 }
