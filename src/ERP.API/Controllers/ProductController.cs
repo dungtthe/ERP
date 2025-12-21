@@ -62,9 +62,8 @@ namespace ERP.API.Controllers
             return Ok(rs.Value);
         }
 
-
         [HttpPost("")]
-        public async Task<IActionResult> GetSuppliers([FromBody] GetProductsQuery query)
+        public async Task<IActionResult> GetProducts([FromBody] GetProductsQuery query)
         {
             var result = await _sender.Send(query);
             if (result.IsFailure)
@@ -73,5 +72,6 @@ namespace ERP.API.Controllers
             }
             return Ok(result.Value);
         }
+
     }
 }

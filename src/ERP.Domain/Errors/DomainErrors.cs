@@ -59,5 +59,10 @@ namespace ERP.Domain.Errors
         {
             public static readonly Error NotFound = new Error("ProductVariant.NotFound", "Biến thể sản phẩm không tồn tại");
         }
+
+        public static class BOM
+        {
+            public static readonly Error NotFound = new Error("BOM.NotFound", "BOM không tồn tại");
+        }
     }
 }

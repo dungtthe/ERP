@@ -10,5 +10,7 @@ namespace ERP.Domain.Repositories
     public interface IProductCatergoryRepository
     {
         Task AddAsync(ProductCatergory productCatergory);
+        Task<bool> IsProductExist(Guid productVariantId);
+
     }
 }
