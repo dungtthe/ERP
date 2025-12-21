@@ -20,7 +20,7 @@ namespace ERP.Application.WorkCenters.Queries.GetWorkCenters
 
         public async Task<Result<List<WorkCenterResponse>>> Handle(GetWorkCentersQuery request, CancellationToken cancellationToken)
         {
-            var workCenters = await _readAppDbContext.WorkCenters.ToListAsync();
+            var workCenters = await _readAppDbContext.WorkCenters.ToListAsync(cancellationToken);
 
             var responseQuery = workCenters.Select(x => new WorkCenterResponse
             {
