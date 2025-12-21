@@ -41,6 +41,7 @@ namespace ERP.Infrastructure
             services.AddScoped<IProductVariantAttributeValue, ProductVariantAttributeValue>();
             services.AddScoped<IBillOfMaterialRepository, BillOfMaterialRepository>();
             services.AddScoped<IBillOfMaterialItemRepository, BillOfMaterialItemRepository>();
+            services.AddScoped<IWorkCenterRepository, WorkCenterRepository>();
 
 
             services.AddScoped<IUserService, UserService>();
