@@ -5,6 +5,7 @@ namespace ERP.Domain.Repositories
     public interface IBillOfMaterialRepository
     {
         Task AddAsync(BillOfMaterial billOfMaterial, CancellationToken cancellationToken = default);
+        Task<bool> IsBomExist(Guid bomId);
 
     }
 }
