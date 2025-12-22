@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ERP.Application.BOM.Queries.GetBOMByProductVariantId;
 using ERP.Application.Products.Commands.CreateBOM;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -25,5 +26,18 @@ namespace ERP.API.Controllers
             }
             return Ok(new { id = result.Value });
         }
+
+        [HttpGet("get-bom/{productVariantId:guid}")]
+        public async Task<IActionResult> GetBOM([FromRoute] Guid productVariantId, CancellationToken cancellationToken)
+        {
+            var query = new GetBOMByProductVarIdQuery(productVariantId);
+            var rs = await _sender.Send(query, cancellationToken);
+            if (rs.IsFailure)
+            {
+                return BadRequest(rs.Error);
+            }
+            return Ok(rs.Value);
+        }
+
     }
 }

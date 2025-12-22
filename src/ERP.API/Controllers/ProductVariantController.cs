@@ -1,4 +1,3 @@
-using ERP.Application.ProductVariants.Queries.GetBOMByProductVariantId;
 using ERP.Application.ProductVariants.Commands.CreateProductVariant;
 using ERP.Application.ProductVariants.Queries.GetProductVariantsByProductIdQuery;
 using ERP.Application.ProductVariants.Queries.GetProductVariantSummaries;
@@ -44,18 +43,6 @@ namespace ERP.API.Controllers
                 return NotFound(result.Error);
             }
             return Ok(result.Value);
-        }
-
-        [HttpGet("get-bom/{productVariantId:guid}")]
-        public async Task<IActionResult> GetBOM([FromRoute] Guid productVariantId, CancellationToken cancellationToken)
-        {
-            var query = new GetBOMByProductVarIdQuery(productVariantId);
-            var rs = await _sender.Send(query, cancellationToken);
-            if (rs.IsFailure)
-            {
-                return BadRequest(rs.Error);
-            }
-            return Ok(rs.Value);
         }
     }
 }

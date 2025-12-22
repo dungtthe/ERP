@@ -5,7 +5,7 @@ using ERP.Domain.Repositories;
 using ERP.Domain.Shared;
 using Microsoft.EntityFrameworkCore;
 
-namespace ERP.Application.ProductVariants.Queries.GetBOMByProductVariantId
+namespace ERP.Application.BOM.Queries.GetBOMByProductVariantId
 {
     public class GetBOMByProductIdQueryHandler : IQueryHandler<GetBOMByProductVarIdQuery, BOMByProductVarIdResponse>
     {
