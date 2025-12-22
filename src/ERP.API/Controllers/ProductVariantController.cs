@@ -1,4 +1,5 @@
 using ERP.Application.ProductVariants.Commands.CreateProductVariant;
+using ERP.Application.ProductVariants.Queries.GetProductVariants;
 using ERP.Application.ProductVariants.Queries.GetProductVariantsByProductIdQuery;
 using ERP.Application.ProductVariants.Queries.GetProductVariantSummaries;
 using MediatR;
@@ -41,6 +42,17 @@ namespace ERP.API.Controllers
             if (result.IsFailure)
             {
                 return NotFound(result.Error);
+            }
+            return Ok(result.Value);
+        }
+
+        [HttpPost("")]
+        public async Task<IActionResult> GetProductVariants([FromBody] GetProductVariantsQuery query)
+        {
+            var result = await _sender.Send(query);
+            if (result.IsFailure)
+            {
+                return BadRequest(result.Error);
             }
             return Ok(result.Value);
         }

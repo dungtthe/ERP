@@ -1,12 +1,7 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using ERP.Application.Abstractions.Messaging;
 using ERP.Application.Abstractions.ReadDb;
 using ERP.Application.Helpers.Paginations;
 using ERP.Domain.Shared;
-using Microsoft.EntityFrameworkCore;
 
 namespace ERP.Application.Products.Queries.GetProducts
 {
