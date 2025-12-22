@@ -1,4 +1,4 @@
-namespace ERP.Application.Products.Queries.GetBOMByProductVariantId
+namespace ERP.Application.ProductVariants.Queries.GetBOMByProductVariantId
 {
     public record BOMByProductVarIdResponse
     {

@@ -1,6 +1,6 @@
 using ERP.Application.Abstractions.Messaging;
 
-namespace ERP.Application.Products.Queries.GetBOMByProductVariantId
+namespace ERP.Application.ProductVariants.Queries.GetBOMByProductVariantId
 {
     public class GetBOMByProductVarIdQuery(Guid ProductVariantId) : IQuery<BOMByProductVarIdResponse>
     {

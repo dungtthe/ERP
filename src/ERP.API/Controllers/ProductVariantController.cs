@@ -1,4 +1,4 @@
-using ERP.Application.Products.Queries.GetBOMByProductVariantId;
+using ERP.Application.ProductVariants.Queries.GetBOMByProductVariantId;
 using ERP.Application.ProductVariants.Commands.CreateProductVariant;
 using ERP.Application.ProductVariants.Queries.GetProductVariantsByProductIdQuery;
 using ERP.Application.ProductVariants.Queries.GetProductVariantSummaries;

@@ -1,4 +1,3 @@
-using System.IO.Compression;
 using ERP.Application.Abstractions.Messaging;
 using ERP.Application.Abstractions.ReadDb;
 using ERP.Domain.Errors;
@@ -6,7 +5,7 @@ using ERP.Domain.Repositories;
 using ERP.Domain.Shared;
 using Microsoft.EntityFrameworkCore;
 
-namespace ERP.Application.Products.Queries.GetBOMByProductVariantId
+namespace ERP.Application.ProductVariants.Queries.GetBOMByProductVariantId
 {
     public class GetBOMByProductIdQueryHandler : IQueryHandler<GetBOMByProductVarIdQuery, BOMByProductVarIdResponse>
     {
