@@ -11,6 +11,7 @@ namespace ERP.Infrastructure.Persistence.Configurations
             builder.ToTable("departments");
 
             builder.HasKey(d => d.Id);
+            builder.Property(x => x.Id).HasColumnName("id");
 
             builder.Property(d => d.Name)
                     .HasColumnName("name")

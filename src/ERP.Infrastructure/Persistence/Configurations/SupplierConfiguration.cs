@@ -11,6 +11,7 @@ namespace ERP.Infrastructure.Persistence.Configurations
             builder.ToTable("suppliers");
 
             builder.HasKey(x => x.Id);
+            builder.Property(x => x.Id).HasColumnName("id");
 
             builder.Property(x => x.CompanyName)
                 .IsRequired()

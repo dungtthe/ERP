@@ -7,11 +7,16 @@ using System.Threading.Tasks;
 
 namespace ERP.Domain.Entities
 {
-    public class SalesInvoice : Entity
+    public class SalesInvoice : AggregateRoot
     {
         public string InvoiceNumber { get; set; }
-        public Guid CustomerId { get; set; }
         public DateTime InvoiceDate { get; set; }
         public DateTime DueDate { get; set; }
+
+        private readonly List<SalesInvoiceLine> _salesInvoiceLines = new();
+        public IReadOnlyCollection<SalesInvoiceLine> SalesInvoiceLines => _salesInvoiceLines;
+
+        public Guid SalesOrderId { get; set; }
+        public SalesOrder SalesOrder { get; set; }
     }
 }

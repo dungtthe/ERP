@@ -13,7 +13,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace ERP.Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20251216080756_Init")]
+    [Migration("20251224051923_Init")]
     partial class Init
     {
         /// <inheritdoc />
@@ -139,7 +139,8 @@ namespace ERP.Infrastructure.Persistence.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
 
                     b.Property<byte>("Level")
                         .HasColumnType("smallint")
@@ -170,7 +171,8 @@ namespace ERP.Infrastructure.Persistence.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
 
                     b.Property<string>("CompanyName")
                         .IsRequired()
@@ -191,11 +193,68 @@ namespace ERP.Infrastructure.Persistence.Migrations
                     b.ToTable("customers", (string)null);
                 });
 
+            modelBuilder.Entity("ERP.Domain.Entities.DeliveryOrder", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("code");
+
+                    b.Property<DateTime>("DeliveryDate")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("delivery_date");
+
+                    b.Property<Guid>("SalesOrderId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("sales_order_id");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SalesOrderId");
+
+                    b.ToTable("delivery_orders", (string)null);
+                });
+
+            modelBuilder.Entity("ERP.Domain.Entities.DeliveryOrderLine", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
+
+                    b.Property<Guid>("DeliveryOrderId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("delivery_order_id");
+
+                    b.Property<Guid>("ProductVariantId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("product_variant_id");
+
+                    b.Property<decimal>("Quantity")
+                        .HasColumnType("numeric(18,4)")
+                        .HasColumnName("quantity");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DeliveryOrderId");
+
+                    b.HasIndex("ProductVariantId");
+
+                    b.ToTable("delivery_order_lines", (string)null);
+                });
+
             modelBuilder.Entity("ERP.Domain.Entities.Department", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
 
                     b.Property<Guid?>("EmployeeId")
                         .HasMaxLength(200)
@@ -225,7 +284,8 @@ namespace ERP.Infrastructure.Persistence.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
 
                     b.Property<DateTime>("DateOfBirth")
                         .HasColumnType("timestamp with time zone")
@@ -289,6 +349,126 @@ namespace ERP.Infrastructure.Persistence.Migrations
                     b.ToTable("employees", (string)null);
                 });
 
+            modelBuilder.Entity("ERP.Domain.Entities.GoodsIssue", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("code");
+
+                    b.Property<DateTime>("IssueDate")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("issue_date");
+
+                    b.Property<byte>("IssueType")
+                        .HasColumnType("smallint")
+                        .HasColumnName("issue_type");
+
+                    b.Property<Guid>("ReferenceId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("reference_id");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("goods_issues", (string)null);
+                });
+
+            modelBuilder.Entity("ERP.Domain.Entities.GoodsIssueLine", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
+
+                    b.Property<Guid>("GoodsIssueId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("goods_issue_id");
+
+                    b.Property<Guid>("ProductVariantId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("product_variant_id");
+
+                    b.Property<decimal>("Quantity")
+                        .HasColumnType("numeric(18,4)")
+                        .HasColumnName("quantity");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("GoodsIssueId");
+
+                    b.HasIndex("ProductVariantId");
+
+                    b.ToTable("goods_issue_lines", (string)null);
+                });
+
+            modelBuilder.Entity("ERP.Domain.Entities.GoodsReceipt", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("code");
+
+                    b.Property<Guid?>("PurchaseInvoiceId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("purchase_invoice_id");
+
+                    b.Property<DateTime>("ReceiptDate")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("receipt_date");
+
+                    b.Property<Guid>("SupplierId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("supplier_id");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PurchaseInvoiceId");
+
+                    b.HasIndex("SupplierId");
+
+                    b.ToTable("goods_receipts", (string)null);
+                });
+
+            modelBuilder.Entity("ERP.Domain.Entities.GoodsReceiptLine", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
+
+                    b.Property<Guid>("GoodsReceiptId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("goods_receipt_id");
+
+                    b.Property<Guid>("ProductVariantId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("product_variant_id");
+
+                    b.Property<decimal>("Quantity")
+                        .HasColumnType("numeric(18,4)")
+                        .HasColumnName("quantity");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("GoodsReceiptId");
+
+                    b.HasIndex("ProductVariantId");
+
+                    b.ToTable("goods_receipt_lines", (string)null);
+                });
+
             modelBuilder.Entity("ERP.Domain.Entities.ManufacturingOrder", b =>
                 {
                     b.Property<Guid>("Id")
@@ -331,6 +511,34 @@ namespace ERP.Infrastructure.Persistence.Migrations
                     b.HasIndex("RoutingId");
 
                     b.ToTable("manufacturing_orders", (string)null);
+                });
+
+            modelBuilder.Entity("ERP.Domain.Entities.Payment", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
+
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("numeric(18,4)")
+                        .HasColumnName("amount");
+
+                    b.Property<byte>("InvoiceType")
+                        .HasColumnType("smallint")
+                        .HasColumnName("invoice_type");
+
+                    b.Property<DateTime>("PaymentDate")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("payment_date");
+
+                    b.Property<Guid>("ReferenceInvoiceId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("reference_invoice_id");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("payments", (string)null);
                 });
 
             modelBuilder.Entity("ERP.Domain.Entities.Product", b =>
@@ -503,6 +711,80 @@ namespace ERP.Infrastructure.Persistence.Migrations
                     b.ToTable("product_variant_attribute_values", (string)null);
                 });
 
+            modelBuilder.Entity("ERP.Domain.Entities.PurchaseInvoice", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
+
+                    b.Property<DateTime>("DueDate")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("due_date");
+
+                    b.Property<DateTime>("InvoiceDate")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("invoice_date");
+
+                    b.Property<string>("InvoiceNumber")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("invoice_number");
+
+                    b.Property<Guid>("SupplierId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("supplier_id");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SupplierId");
+
+                    b.ToTable("purchase_invoices", (string)null);
+                });
+
+            modelBuilder.Entity("ERP.Domain.Entities.PurchaseInvoiceLine", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
+
+                    b.Property<Guid>("ProductVariantId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("product_variant_id");
+
+                    b.Property<Guid>("PurchaseInvoiceId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("purchase_invoice_id");
+
+                    b.Property<decimal>("Quantity")
+                        .HasColumnType("numeric(18,4)")
+                        .HasColumnName("quantity");
+
+                    b.Property<Guid?>("TaxId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("tax_id");
+
+                    b.Property<decimal>("TaxRate")
+                        .HasColumnType("numeric(5,4)")
+                        .HasColumnName("tax_rate");
+
+                    b.Property<decimal>("UnitPrice")
+                        .HasColumnType("numeric(18,4)")
+                        .HasColumnName("unit_price");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductVariantId");
+
+                    b.HasIndex("PurchaseInvoiceId");
+
+                    b.HasIndex("TaxId");
+
+                    b.ToTable("purchase_invoice_lines", (string)null);
+                });
+
             modelBuilder.Entity("ERP.Domain.Entities.Routing", b =>
                 {
                     b.Property<Guid>("Id")
@@ -577,11 +859,162 @@ namespace ERP.Infrastructure.Persistence.Migrations
                     b.ToTable("routing_steps", (string)null);
                 });
 
+            modelBuilder.Entity("ERP.Domain.Entities.SalesInvoice", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
+
+                    b.Property<DateTime>("DueDate")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("due_date");
+
+                    b.Property<DateTime>("InvoiceDate")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("invoice_date");
+
+                    b.Property<string>("InvoiceNumber")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("invoice_number");
+
+                    b.Property<Guid>("SalesOrderId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("sales_order_id");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SalesOrderId")
+                        .IsUnique()
+                        .HasDatabaseName("ux_sales_invoices_sales_order");
+
+                    b.ToTable("sales_invoices", (string)null);
+                });
+
+            modelBuilder.Entity("ERP.Domain.Entities.SalesInvoiceLine", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
+
+                    b.Property<Guid>("ProductVariantId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("product_variant_id");
+
+                    b.Property<decimal>("Quantity")
+                        .HasColumnType("numeric(18,4)")
+                        .HasColumnName("quantity");
+
+                    b.Property<Guid>("SalesInvoiceId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("sales_invoice_id");
+
+                    b.Property<Guid?>("TaxId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("tax_id");
+
+                    b.Property<decimal>("TaxRate")
+                        .HasColumnType("numeric(5,4)")
+                        .HasColumnName("tax_rate");
+
+                    b.Property<decimal>("UnitPrice")
+                        .HasColumnType("numeric(18,4)")
+                        .HasColumnName("unit_price");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductVariantId");
+
+                    b.HasIndex("SalesInvoiceId");
+
+                    b.HasIndex("TaxId");
+
+                    b.ToTable("sales_invoice_lines", (string)null);
+                });
+
+            modelBuilder.Entity("ERP.Domain.Entities.SalesOrder", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("code");
+
+                    b.Property<Guid>("CustomerId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("customer_id");
+
+                    b.Property<DateTime>("OrderDate")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("order_date");
+
+                    b.Property<byte>("Status")
+                        .HasColumnType("smallint")
+                        .HasColumnName("status");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CustomerId");
+
+                    b.ToTable("sales_orders", (string)null);
+                });
+
+            modelBuilder.Entity("ERP.Domain.Entities.SalesOrderLine", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
+
+                    b.Property<Guid>("ProductVariantId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("product_variant_id");
+
+                    b.Property<decimal>("Quantity")
+                        .HasColumnType("numeric(18,4)")
+                        .HasColumnName("quantity");
+
+                    b.Property<Guid>("SalesOrderId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("sales_order_id");
+
+                    b.Property<Guid?>("TaxId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("tax_id");
+
+                    b.Property<decimal>("TaxRate")
+                        .HasColumnType("numeric(5,4)")
+                        .HasColumnName("tax_rate");
+
+                    b.Property<decimal>("UnitPrice")
+                        .HasColumnType("numeric(18,4)")
+                        .HasColumnName("unit_price");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductVariantId");
+
+                    b.HasIndex("SalesOrderId");
+
+                    b.HasIndex("TaxId");
+
+                    b.ToTable("sales_order_lines", (string)null);
+                });
+
             modelBuilder.Entity("ERP.Domain.Entities.Supplier", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
 
                     b.Property<string>("CompanyName")
                         .IsRequired()
@@ -600,6 +1033,42 @@ namespace ERP.Infrastructure.Persistence.Migrations
                         .IsUnique();
 
                     b.ToTable("suppliers", (string)null);
+                });
+
+            modelBuilder.Entity("ERP.Domain.Entities.Tax", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)")
+                        .HasColumnName("code");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_active");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("name");
+
+                    b.Property<decimal>("Rate")
+                        .HasColumnType("numeric(5,4)")
+                        .HasColumnName("rate");
+
+                    b.Property<byte>("Type")
+                        .HasColumnType("smallint")
+                        .HasColumnName("type");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("taxes", (string)null);
                 });
 
             modelBuilder.Entity("ERP.Domain.Entities.UnitOfMeasure", b =>
@@ -624,7 +1093,8 @@ namespace ERP.Infrastructure.Persistence.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
 
                     b.Property<string>("Address")
                         .IsRequired()
@@ -698,7 +1168,8 @@ namespace ERP.Infrastructure.Persistence.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
 
                     b.Property<Guid>("ManufacturingOrderId")
                         .HasColumnType("uuid")
@@ -808,6 +1279,37 @@ namespace ERP.Infrastructure.Persistence.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("ERP.Domain.Entities.DeliveryOrder", b =>
+                {
+                    b.HasOne("ERP.Domain.Entities.SalesOrder", "SalesOrder")
+                        .WithMany()
+                        .HasForeignKey("SalesOrderId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired()
+                        .HasConstraintName("fk_delivery_orders_sales_order");
+
+                    b.Navigation("SalesOrder");
+                });
+
+            modelBuilder.Entity("ERP.Domain.Entities.DeliveryOrderLine", b =>
+                {
+                    b.HasOne("ERP.Domain.Entities.DeliveryOrder", null)
+                        .WithMany("DeliveryOrderLines")
+                        .HasForeignKey("DeliveryOrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_dol_delivery_order");
+
+                    b.HasOne("ERP.Domain.Entities.ProductVariant", "ProductVariant")
+                        .WithMany()
+                        .HasForeignKey("ProductVariantId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired()
+                        .HasConstraintName("fk_dol_product_variant");
+
+                    b.Navigation("ProductVariant");
+                });
+
             modelBuilder.Entity("ERP.Domain.Entities.Department", b =>
                 {
                     b.HasOne("ERP.Domain.Entities.Employee", "Employee")
@@ -838,6 +1340,64 @@ namespace ERP.Infrastructure.Persistence.Migrations
                     b.Navigation("Department");
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("ERP.Domain.Entities.GoodsIssueLine", b =>
+                {
+                    b.HasOne("ERP.Domain.Entities.GoodsIssue", null)
+                        .WithMany("GoodsIssueLines")
+                        .HasForeignKey("GoodsIssueId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_gil_goods_issue");
+
+                    b.HasOne("ERP.Domain.Entities.ProductVariant", "ProductVariant")
+                        .WithMany()
+                        .HasForeignKey("ProductVariantId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired()
+                        .HasConstraintName("fk_gil_product_variant");
+
+                    b.Navigation("ProductVariant");
+                });
+
+            modelBuilder.Entity("ERP.Domain.Entities.GoodsReceipt", b =>
+                {
+                    b.HasOne("ERP.Domain.Entities.PurchaseInvoice", "PurchaseInvoice")
+                        .WithMany()
+                        .HasForeignKey("PurchaseInvoiceId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .HasConstraintName("fk_gr_purchase_invoice");
+
+                    b.HasOne("ERP.Domain.Entities.Supplier", "Supplier")
+                        .WithMany()
+                        .HasForeignKey("SupplierId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired()
+                        .HasConstraintName("fk_gr_supplier");
+
+                    b.Navigation("PurchaseInvoice");
+
+                    b.Navigation("Supplier");
+                });
+
+            modelBuilder.Entity("ERP.Domain.Entities.GoodsReceiptLine", b =>
+                {
+                    b.HasOne("ERP.Domain.Entities.GoodsReceipt", null)
+                        .WithMany("GoodsReceiptLines")
+                        .HasForeignKey("GoodsReceiptId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_grl_goods_receipt");
+
+                    b.HasOne("ERP.Domain.Entities.ProductVariant", "ProductVariant")
+                        .WithMany()
+                        .HasForeignKey("ProductVariantId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired()
+                        .HasConstraintName("fk_grl_product_variant");
+
+                    b.Navigation("ProductVariant");
                 });
 
             modelBuilder.Entity("ERP.Domain.Entities.ManufacturingOrder", b =>
@@ -918,6 +1478,45 @@ namespace ERP.Infrastructure.Persistence.Migrations
                     b.Navigation("ProductVariant");
                 });
 
+            modelBuilder.Entity("ERP.Domain.Entities.PurchaseInvoice", b =>
+                {
+                    b.HasOne("ERP.Domain.Entities.Supplier", "Supplier")
+                        .WithMany()
+                        .HasForeignKey("SupplierId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired()
+                        .HasConstraintName("fk_pi_supplier");
+
+                    b.Navigation("Supplier");
+                });
+
+            modelBuilder.Entity("ERP.Domain.Entities.PurchaseInvoiceLine", b =>
+                {
+                    b.HasOne("ERP.Domain.Entities.ProductVariant", "ProductVariant")
+                        .WithMany()
+                        .HasForeignKey("ProductVariantId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired()
+                        .HasConstraintName("fk_pil_product_variant");
+
+                    b.HasOne("ERP.Domain.Entities.PurchaseInvoice", null)
+                        .WithMany("PurchaseInvoiceLines")
+                        .HasForeignKey("PurchaseInvoiceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_pil_invoice");
+
+                    b.HasOne("ERP.Domain.Entities.Tax", "Tax")
+                        .WithMany()
+                        .HasForeignKey("TaxId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .HasConstraintName("fk_pil_tax");
+
+                    b.Navigation("ProductVariant");
+
+                    b.Navigation("Tax");
+                });
+
             modelBuilder.Entity("ERP.Domain.Entities.Routing", b =>
                 {
                     b.HasOne("ERP.Domain.Entities.BillOfMaterial", "BillOfMaterial")
@@ -940,6 +1539,84 @@ namespace ERP.Infrastructure.Persistence.Migrations
                         .HasConstraintName("fk_routingstep_routing");
 
                     b.Navigation("Routing");
+                });
+
+            modelBuilder.Entity("ERP.Domain.Entities.SalesInvoice", b =>
+                {
+                    b.HasOne("ERP.Domain.Entities.SalesOrder", "SalesOrder")
+                        .WithOne("SalesInvoice")
+                        .HasForeignKey("ERP.Domain.Entities.SalesInvoice", "SalesOrderId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired()
+                        .HasConstraintName("fk_sales_invoices_sales_order");
+
+                    b.Navigation("SalesOrder");
+                });
+
+            modelBuilder.Entity("ERP.Domain.Entities.SalesInvoiceLine", b =>
+                {
+                    b.HasOne("ERP.Domain.Entities.ProductVariant", "ProductVariant")
+                        .WithMany()
+                        .HasForeignKey("ProductVariantId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired()
+                        .HasConstraintName("fk_sil_product_variant");
+
+                    b.HasOne("ERP.Domain.Entities.SalesInvoice", null)
+                        .WithMany("SalesInvoiceLines")
+                        .HasForeignKey("SalesInvoiceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_sil_sales_invoice");
+
+                    b.HasOne("ERP.Domain.Entities.Tax", "Tax")
+                        .WithMany()
+                        .HasForeignKey("TaxId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .HasConstraintName("fk_sil_tax");
+
+                    b.Navigation("ProductVariant");
+
+                    b.Navigation("Tax");
+                });
+
+            modelBuilder.Entity("ERP.Domain.Entities.SalesOrder", b =>
+                {
+                    b.HasOne("ERP.Domain.Entities.Customer", "Customer")
+                        .WithMany()
+                        .HasForeignKey("CustomerId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired()
+                        .HasConstraintName("fk_sales_orders_customer");
+
+                    b.Navigation("Customer");
+                });
+
+            modelBuilder.Entity("ERP.Domain.Entities.SalesOrderLine", b =>
+                {
+                    b.HasOne("ERP.Domain.Entities.ProductVariant", "ProductVariant")
+                        .WithMany()
+                        .HasForeignKey("ProductVariantId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired()
+                        .HasConstraintName("fk_sol_product_variant");
+
+                    b.HasOne("ERP.Domain.Entities.SalesOrder", null)
+                        .WithMany("SalesOrderLines")
+                        .HasForeignKey("SalesOrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_sol_sales_order");
+
+                    b.HasOne("ERP.Domain.Entities.Tax", "Tax")
+                        .WithMany()
+                        .HasForeignKey("TaxId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .HasConstraintName("fk_sol_tax");
+
+                    b.Navigation("ProductVariant");
+
+                    b.Navigation("Tax");
                 });
 
             modelBuilder.Entity("ERP.Domain.Entities.Supplier", b =>
@@ -984,14 +1661,46 @@ namespace ERP.Infrastructure.Persistence.Migrations
                     b.Navigation("WorkCenter");
                 });
 
+            modelBuilder.Entity("ERP.Domain.Entities.DeliveryOrder", b =>
+                {
+                    b.Navigation("DeliveryOrderLines");
+                });
+
             modelBuilder.Entity("ERP.Domain.Entities.Department", b =>
                 {
                     b.Navigation("Employees");
                 });
 
+            modelBuilder.Entity("ERP.Domain.Entities.GoodsIssue", b =>
+                {
+                    b.Navigation("GoodsIssueLines");
+                });
+
+            modelBuilder.Entity("ERP.Domain.Entities.GoodsReceipt", b =>
+                {
+                    b.Navigation("GoodsReceiptLines");
+                });
+
             modelBuilder.Entity("ERP.Domain.Entities.Product", b =>
                 {
                     b.Navigation("Variants");
+                });
+
+            modelBuilder.Entity("ERP.Domain.Entities.PurchaseInvoice", b =>
+                {
+                    b.Navigation("PurchaseInvoiceLines");
+                });
+
+            modelBuilder.Entity("ERP.Domain.Entities.SalesInvoice", b =>
+                {
+                    b.Navigation("SalesInvoiceLines");
+                });
+
+            modelBuilder.Entity("ERP.Domain.Entities.SalesOrder", b =>
+                {
+                    b.Navigation("SalesInvoice");
+
+                    b.Navigation("SalesOrderLines");
                 });
 #pragma warning restore 612, 618
         }

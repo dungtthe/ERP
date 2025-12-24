@@ -28,7 +28,7 @@ namespace ERP.Infrastructure.Persistence.Migrations
                 name: "categories",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    id = table.Column<Guid>(type: "uuid", nullable: false),
                     name = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: false),
                     parent_id = table.Column<Guid>(type: "uuid", nullable: true),
                     level = table.Column<byte>(type: "smallint", nullable: false),
@@ -36,13 +36,59 @@ namespace ERP.Infrastructure.Persistence.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_categories", x => x.Id);
+                    table.PrimaryKey("PK_categories", x => x.id);
                     table.ForeignKey(
                         name: "fk_categories_parent",
                         column: x => x.parent_id,
                         principalTable: "categories",
-                        principalColumn: "Id",
+                        principalColumn: "id",
                         onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "goods_issues",
+                columns: table => new
+                {
+                    id = table.Column<Guid>(type: "uuid", nullable: false),
+                    code = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
+                    issue_date = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    issue_type = table.Column<byte>(type: "smallint", nullable: false),
+                    reference_id = table.Column<Guid>(type: "uuid", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_goods_issues", x => x.id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "payments",
+                columns: table => new
+                {
+                    id = table.Column<Guid>(type: "uuid", nullable: false),
+                    amount = table.Column<decimal>(type: "numeric(18,4)", nullable: false),
+                    payment_date = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    invoice_type = table.Column<byte>(type: "smallint", nullable: false),
+                    reference_invoice_id = table.Column<Guid>(type: "uuid", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_payments", x => x.id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "taxes",
+                columns: table => new
+                {
+                    id = table.Column<Guid>(type: "uuid", nullable: false),
+                    code = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
+                    name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
+                    rate = table.Column<decimal>(type: "numeric(5,4)", nullable: false),
+                    type = table.Column<byte>(type: "smallint", nullable: false),
+                    is_active = table.Column<bool>(type: "boolean", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_taxes", x => x.id);
                 });
 
             migrationBuilder.CreateTable(
@@ -61,7 +107,7 @@ namespace ERP.Infrastructure.Persistence.Migrations
                 name: "users",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    id = table.Column<Guid>(type: "uuid", nullable: false),
                     phone_number = table.Column<string>(type: "character varying(15)", maxLength: 15, nullable: false),
                     address = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),
                     avatar_url = table.Column<string>(type: "text", nullable: false),
@@ -71,7 +117,7 @@ namespace ERP.Infrastructure.Persistence.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_users", x => x.Id);
+                    table.PrimaryKey("PK_users", x => x.id);
                 });
 
             migrationBuilder.CreateTable(
@@ -139,18 +185,18 @@ namespace ERP.Infrastructure.Persistence.Migrations
                 name: "customers",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    id = table.Column<Guid>(type: "uuid", nullable: false),
                     company_name = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),
                     user_id = table.Column<Guid>(type: "uuid", maxLength: 200, nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_customers", x => x.Id);
+                    table.PrimaryKey("PK_customers", x => x.id);
                     table.ForeignKey(
                         name: "FK_Customers_Users",
                         column: x => x.user_id,
                         principalTable: "users",
-                        principalColumn: "Id",
+                        principalColumn: "id",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -158,18 +204,18 @@ namespace ERP.Infrastructure.Persistence.Migrations
                 name: "suppliers",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    id = table.Column<Guid>(type: "uuid", nullable: false),
                     company_name = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),
                     user_id = table.Column<Guid>(type: "uuid", maxLength: 200, nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_suppliers", x => x.Id);
+                    table.PrimaryKey("PK_suppliers", x => x.id);
                     table.ForeignKey(
                         name: "FK_Suppliers_Users",
                         column: x => x.user_id,
                         principalTable: "users",
-                        principalColumn: "Id",
+                        principalColumn: "id",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -187,7 +233,7 @@ namespace ERP.Infrastructure.Persistence.Migrations
                         name: "fk_product_categories_category",
                         column: x => x.category_id,
                         principalTable: "categories",
-                        principalColumn: "Id",
+                        principalColumn: "id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "fk_product_categories_product",
@@ -226,6 +272,48 @@ namespace ERP.Infrastructure.Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "sales_orders",
+                columns: table => new
+                {
+                    id = table.Column<Guid>(type: "uuid", nullable: false),
+                    code = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
+                    customer_id = table.Column<Guid>(type: "uuid", nullable: false),
+                    order_date = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    status = table.Column<byte>(type: "smallint", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_sales_orders", x => x.id);
+                    table.ForeignKey(
+                        name: "fk_sales_orders_customer",
+                        column: x => x.customer_id,
+                        principalTable: "customers",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "purchase_invoices",
+                columns: table => new
+                {
+                    id = table.Column<Guid>(type: "uuid", nullable: false),
+                    invoice_number = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
+                    supplier_id = table.Column<Guid>(type: "uuid", nullable: false),
+                    invoice_date = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    due_date = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_purchase_invoices", x => x.id);
+                    table.ForeignKey(
+                        name: "fk_pi_supplier",
+                        column: x => x.supplier_id,
+                        principalTable: "suppliers",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "bill_of_materials",
                 columns: table => new
                 {
@@ -252,6 +340,32 @@ namespace ERP.Infrastructure.Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "goods_issue_lines",
+                columns: table => new
+                {
+                    id = table.Column<Guid>(type: "uuid", nullable: false),
+                    goods_issue_id = table.Column<Guid>(type: "uuid", nullable: false),
+                    product_variant_id = table.Column<Guid>(type: "uuid", nullable: false),
+                    quantity = table.Column<decimal>(type: "numeric(18,4)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_goods_issue_lines", x => x.id);
+                    table.ForeignKey(
+                        name: "fk_gil_goods_issue",
+                        column: x => x.goods_issue_id,
+                        principalTable: "goods_issues",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "fk_gil_product_variant",
+                        column: x => x.product_variant_id,
+                        principalTable: "product_variants",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "product_variant_attribute_values",
                 columns: table => new
                 {
@@ -271,6 +385,144 @@ namespace ERP.Infrastructure.Persistence.Migrations
                         name: "fk_pvav_product_variant",
                         column: x => x.product_variant_id,
                         principalTable: "product_variants",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "delivery_orders",
+                columns: table => new
+                {
+                    id = table.Column<Guid>(type: "uuid", nullable: false),
+                    code = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
+                    sales_order_id = table.Column<Guid>(type: "uuid", nullable: false),
+                    delivery_date = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_delivery_orders", x => x.id);
+                    table.ForeignKey(
+                        name: "fk_delivery_orders_sales_order",
+                        column: x => x.sales_order_id,
+                        principalTable: "sales_orders",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "sales_invoices",
+                columns: table => new
+                {
+                    id = table.Column<Guid>(type: "uuid", nullable: false),
+                    invoice_number = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
+                    invoice_date = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    due_date = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    sales_order_id = table.Column<Guid>(type: "uuid", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_sales_invoices", x => x.id);
+                    table.ForeignKey(
+                        name: "fk_sales_invoices_sales_order",
+                        column: x => x.sales_order_id,
+                        principalTable: "sales_orders",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "sales_order_lines",
+                columns: table => new
+                {
+                    id = table.Column<Guid>(type: "uuid", nullable: false),
+                    sales_order_id = table.Column<Guid>(type: "uuid", nullable: false),
+                    product_variant_id = table.Column<Guid>(type: "uuid", nullable: false),
+                    quantity = table.Column<decimal>(type: "numeric(18,4)", nullable: false),
+                    unit_price = table.Column<decimal>(type: "numeric(18,4)", nullable: false),
+                    tax_id = table.Column<Guid>(type: "uuid", nullable: true),
+                    tax_rate = table.Column<decimal>(type: "numeric(5,4)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_sales_order_lines", x => x.id);
+                    table.ForeignKey(
+                        name: "fk_sol_product_variant",
+                        column: x => x.product_variant_id,
+                        principalTable: "product_variants",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "fk_sol_sales_order",
+                        column: x => x.sales_order_id,
+                        principalTable: "sales_orders",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "fk_sol_tax",
+                        column: x => x.tax_id,
+                        principalTable: "taxes",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "goods_receipts",
+                columns: table => new
+                {
+                    id = table.Column<Guid>(type: "uuid", nullable: false),
+                    code = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
+                    supplier_id = table.Column<Guid>(type: "uuid", nullable: false),
+                    receipt_date = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    purchase_invoice_id = table.Column<Guid>(type: "uuid", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_goods_receipts", x => x.id);
+                    table.ForeignKey(
+                        name: "fk_gr_purchase_invoice",
+                        column: x => x.purchase_invoice_id,
+                        principalTable: "purchase_invoices",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "fk_gr_supplier",
+                        column: x => x.supplier_id,
+                        principalTable: "suppliers",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "purchase_invoice_lines",
+                columns: table => new
+                {
+                    id = table.Column<Guid>(type: "uuid", nullable: false),
+                    purchase_invoice_id = table.Column<Guid>(type: "uuid", nullable: false),
+                    product_variant_id = table.Column<Guid>(type: "uuid", nullable: false),
+                    quantity = table.Column<decimal>(type: "numeric(18,4)", nullable: false),
+                    unit_price = table.Column<decimal>(type: "numeric(18,4)", nullable: false),
+                    tax_id = table.Column<Guid>(type: "uuid", nullable: true),
+                    tax_rate = table.Column<decimal>(type: "numeric(5,4)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_purchase_invoice_lines", x => x.id);
+                    table.ForeignKey(
+                        name: "fk_pil_invoice",
+                        column: x => x.purchase_invoice_id,
+                        principalTable: "purchase_invoices",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "fk_pil_product_variant",
+                        column: x => x.product_variant_id,
+                        principalTable: "product_variants",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "fk_pil_tax",
+                        column: x => x.tax_id,
+                        principalTable: "taxes",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -330,6 +582,93 @@ namespace ERP.Infrastructure.Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "delivery_order_lines",
+                columns: table => new
+                {
+                    id = table.Column<Guid>(type: "uuid", nullable: false),
+                    delivery_order_id = table.Column<Guid>(type: "uuid", nullable: false),
+                    product_variant_id = table.Column<Guid>(type: "uuid", nullable: false),
+                    quantity = table.Column<decimal>(type: "numeric(18,4)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_delivery_order_lines", x => x.id);
+                    table.ForeignKey(
+                        name: "fk_dol_delivery_order",
+                        column: x => x.delivery_order_id,
+                        principalTable: "delivery_orders",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "fk_dol_product_variant",
+                        column: x => x.product_variant_id,
+                        principalTable: "product_variants",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "sales_invoice_lines",
+                columns: table => new
+                {
+                    id = table.Column<Guid>(type: "uuid", nullable: false),
+                    sales_invoice_id = table.Column<Guid>(type: "uuid", nullable: false),
+                    product_variant_id = table.Column<Guid>(type: "uuid", nullable: false),
+                    quantity = table.Column<decimal>(type: "numeric(18,4)", nullable: false),
+                    unit_price = table.Column<decimal>(type: "numeric(18,4)", nullable: false),
+                    tax_id = table.Column<Guid>(type: "uuid", nullable: true),
+                    tax_rate = table.Column<decimal>(type: "numeric(5,4)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_sales_invoice_lines", x => x.id);
+                    table.ForeignKey(
+                        name: "fk_sil_product_variant",
+                        column: x => x.product_variant_id,
+                        principalTable: "product_variants",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "fk_sil_sales_invoice",
+                        column: x => x.sales_invoice_id,
+                        principalTable: "sales_invoices",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "fk_sil_tax",
+                        column: x => x.tax_id,
+                        principalTable: "taxes",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "goods_receipt_lines",
+                columns: table => new
+                {
+                    id = table.Column<Guid>(type: "uuid", nullable: false),
+                    goods_receipt_id = table.Column<Guid>(type: "uuid", nullable: false),
+                    product_variant_id = table.Column<Guid>(type: "uuid", nullable: false),
+                    quantity = table.Column<decimal>(type: "numeric(18,4)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_goods_receipt_lines", x => x.id);
+                    table.ForeignKey(
+                        name: "fk_grl_goods_receipt",
+                        column: x => x.goods_receipt_id,
+                        principalTable: "goods_receipts",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "fk_grl_product_variant",
+                        column: x => x.product_variant_id,
+                        principalTable: "product_variants",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "manufacturing_orders",
                 columns: table => new
                 {
@@ -381,14 +720,14 @@ namespace ERP.Infrastructure.Persistence.Migrations
                 name: "work_orders",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    id = table.Column<Guid>(type: "uuid", nullable: false),
                     mo_id = table.Column<Guid>(type: "uuid", nullable: false),
                     work_center_id = table.Column<Guid>(type: "uuid", nullable: false),
                     routing_step_id = table.Column<Guid>(type: "uuid", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_work_orders", x => x.Id);
+                    table.PrimaryKey("PK_work_orders", x => x.id);
                     table.ForeignKey(
                         name: "fk_wo_mo",
                         column: x => x.mo_id,
@@ -413,21 +752,21 @@ namespace ERP.Infrastructure.Persistence.Migrations
                 name: "departments",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    id = table.Column<Guid>(type: "uuid", nullable: false),
                     name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
                     positions = table.Column<List<string>>(type: "text[]", nullable: false),
                     employee_id = table.Column<Guid>(type: "uuid", maxLength: 200, nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_departments", x => x.Id);
+                    table.PrimaryKey("PK_departments", x => x.id);
                 });
 
             migrationBuilder.CreateTable(
                 name: "employees",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    id = table.Column<Guid>(type: "uuid", nullable: false),
                     first_name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
                     last_name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
                     position = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
@@ -441,18 +780,18 @@ namespace ERP.Infrastructure.Persistence.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_employees", x => x.Id);
+                    table.PrimaryKey("PK_employees", x => x.id);
                     table.ForeignKey(
                         name: "FK_Employees_Departments",
                         column: x => x.department_id,
                         principalTable: "departments",
-                        principalColumn: "Id",
+                        principalColumn: "id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Employees_Users",
                         column: x => x.user_id,
                         principalTable: "users",
-                        principalColumn: "Id",
+                        principalColumn: "id",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -498,6 +837,21 @@ namespace ERP.Infrastructure.Persistence.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_delivery_order_lines_delivery_order_id",
+                table: "delivery_order_lines",
+                column: "delivery_order_id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_delivery_order_lines_product_variant_id",
+                table: "delivery_order_lines",
+                column: "product_variant_id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_delivery_orders_sales_order_id",
+                table: "delivery_orders",
+                column: "sales_order_id");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_departments_employee_id",
                 table: "departments",
                 column: "employee_id",
@@ -513,6 +867,36 @@ namespace ERP.Infrastructure.Persistence.Migrations
                 table: "employees",
                 column: "user_id",
                 unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_goods_issue_lines_goods_issue_id",
+                table: "goods_issue_lines",
+                column: "goods_issue_id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_goods_issue_lines_product_variant_id",
+                table: "goods_issue_lines",
+                column: "product_variant_id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_goods_receipt_lines_goods_receipt_id",
+                table: "goods_receipt_lines",
+                column: "goods_receipt_id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_goods_receipt_lines_product_variant_id",
+                table: "goods_receipt_lines",
+                column: "product_variant_id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_goods_receipts_purchase_invoice_id",
+                table: "goods_receipts",
+                column: "purchase_invoice_id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_goods_receipts_supplier_id",
+                table: "goods_receipts",
+                column: "supplier_id");
 
             migrationBuilder.CreateIndex(
                 name: "IX_manufacturing_orders_routing_id",
@@ -552,6 +936,26 @@ namespace ERP.Infrastructure.Persistence.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_purchase_invoice_lines_product_variant_id",
+                table: "purchase_invoice_lines",
+                column: "product_variant_id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_purchase_invoice_lines_purchase_invoice_id",
+                table: "purchase_invoice_lines",
+                column: "purchase_invoice_id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_purchase_invoice_lines_tax_id",
+                table: "purchase_invoice_lines",
+                column: "tax_id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_purchase_invoices_supplier_id",
+                table: "purchase_invoices",
+                column: "supplier_id");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_routing_steps_routing_id",
                 table: "routing_steps",
                 column: "routing_id");
@@ -560,6 +964,47 @@ namespace ERP.Infrastructure.Persistence.Migrations
                 name: "IX_routings_bom_id",
                 table: "routings",
                 column: "bom_id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_sales_invoice_lines_product_variant_id",
+                table: "sales_invoice_lines",
+                column: "product_variant_id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_sales_invoice_lines_sales_invoice_id",
+                table: "sales_invoice_lines",
+                column: "sales_invoice_id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_sales_invoice_lines_tax_id",
+                table: "sales_invoice_lines",
+                column: "tax_id");
+
+            migrationBuilder.CreateIndex(
+                name: "ux_sales_invoices_sales_order",
+                table: "sales_invoices",
+                column: "sales_order_id",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_sales_order_lines_product_variant_id",
+                table: "sales_order_lines",
+                column: "product_variant_id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_sales_order_lines_sales_order_id",
+                table: "sales_order_lines",
+                column: "sales_order_id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_sales_order_lines_tax_id",
+                table: "sales_order_lines",
+                column: "tax_id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_sales_orders_customer_id",
+                table: "sales_orders",
+                column: "customer_id");
 
             migrationBuilder.CreateIndex(
                 name: "IX_suppliers_user_id",
@@ -593,7 +1038,7 @@ namespace ERP.Infrastructure.Persistence.Migrations
                 table: "departments",
                 column: "employee_id",
                 principalTable: "employees",
-                principalColumn: "Id",
+                principalColumn: "id",
                 onDelete: ReferentialAction.Restrict);
         }
 
@@ -612,7 +1057,16 @@ namespace ERP.Infrastructure.Persistence.Migrations
                 name: "bill_of_material_items");
 
             migrationBuilder.DropTable(
-                name: "customers");
+                name: "delivery_order_lines");
+
+            migrationBuilder.DropTable(
+                name: "goods_issue_lines");
+
+            migrationBuilder.DropTable(
+                name: "goods_receipt_lines");
+
+            migrationBuilder.DropTable(
+                name: "payments");
 
             migrationBuilder.DropTable(
                 name: "product_categories");
@@ -621,16 +1075,37 @@ namespace ERP.Infrastructure.Persistence.Migrations
                 name: "product_variant_attribute_values");
 
             migrationBuilder.DropTable(
-                name: "suppliers");
+                name: "purchase_invoice_lines");
+
+            migrationBuilder.DropTable(
+                name: "sales_invoice_lines");
+
+            migrationBuilder.DropTable(
+                name: "sales_order_lines");
 
             migrationBuilder.DropTable(
                 name: "work_orders");
+
+            migrationBuilder.DropTable(
+                name: "delivery_orders");
+
+            migrationBuilder.DropTable(
+                name: "goods_issues");
+
+            migrationBuilder.DropTable(
+                name: "goods_receipts");
 
             migrationBuilder.DropTable(
                 name: "categories");
 
             migrationBuilder.DropTable(
                 name: "attribute_values");
+
+            migrationBuilder.DropTable(
+                name: "sales_invoices");
+
+            migrationBuilder.DropTable(
+                name: "taxes");
 
             migrationBuilder.DropTable(
                 name: "manufacturing_orders");
@@ -642,10 +1117,22 @@ namespace ERP.Infrastructure.Persistence.Migrations
                 name: "work_centers");
 
             migrationBuilder.DropTable(
+                name: "purchase_invoices");
+
+            migrationBuilder.DropTable(
                 name: "attributes");
 
             migrationBuilder.DropTable(
+                name: "sales_orders");
+
+            migrationBuilder.DropTable(
                 name: "routings");
+
+            migrationBuilder.DropTable(
+                name: "suppliers");
+
+            migrationBuilder.DropTable(
+                name: "customers");
 
             migrationBuilder.DropTable(
                 name: "bill_of_materials");

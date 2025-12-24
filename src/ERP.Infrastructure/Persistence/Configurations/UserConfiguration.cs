@@ -12,6 +12,7 @@ namespace ERP.Infrastructure.Persistence.Configurations
             builder.ToTable("users");
 
             builder.HasKey(x => x.Id);
+            builder.Property(x => x.Id).HasColumnName("id");
 
             builder.Property(x => x.PhoneNumber)
                 .IsRequired()
