@@ -25,7 +25,7 @@ namespace ERP.Application.Employees.Commands.CreateEmployee
         }
         public async Task<Result<Guid>> Handle(CreateEmployeeCommand request, CancellationToken cancellationToken)
         {
-            if (await _userRepository.GetByEmailAsync(request.Email, cancellationToken) is not null)
+            if (await _userRepository.IsEmailExistAsync(request.Email, cancellationToken))
             {
                 return Result.Failure<Guid>(DomainErrors.User.DuplicateEmail);
             }

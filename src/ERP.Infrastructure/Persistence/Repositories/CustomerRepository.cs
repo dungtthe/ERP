@@ -22,15 +22,9 @@ namespace ERP.Infrastructure.Persistence.Repositories
         {
             await _dbContext.Customers.AddAsync(customer, cancellationToken);
         }
-
-        public async Task<List<Customer>> GetAllAsync(CancellationToken cancellationToken = default)
+        public async Task<bool> IsCustomerExistAsync(Guid id, CancellationToken cancellationToken = default)
         {
-            return await _readAppDbContext.Customers.ToListAsync(cancellationToken);
-        }
-
-        public async Task<Customer?> GetCustomerByIdAsync(Guid id, CancellationToken cancellationToken = default)
-        {
-            return await _readAppDbContext.Customers.FirstOrDefaultAsync(c => c.Id == id, cancellationToken);
+            return await _readAppDbContext.Customers.AnyAsync(c => c.Id == id, cancellationToken);
         }
     }
 }

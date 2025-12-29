@@ -21,15 +21,9 @@ namespace ERP.Infrastructure.Persistence.Repositories
         {
             await _dbContext.Suppliers.AddAsync(supplier, cancellationToken);
         }
-
-        public async Task<List<Supplier>> GetAllAsync(CancellationToken cancellationToken = default)
+        public async Task<bool> IsSupplierExistAsync(Guid id, CancellationToken cancellationToken = default)
         {
-            return await _readAppDbContext.Suppliers.ToListAsync(cancellationToken);
-        }
-
-        public async Task<Supplier?> GetSupplierByIdAsync(Guid id, CancellationToken cancellationToken = default)
-        {
-            return await _readAppDbContext.Suppliers.FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
+            return await _readAppDbContext.Suppliers.AnyAsync(s => s.Id == id, cancellationToken);
         }
     }
 }

@@ -20,20 +20,13 @@ namespace ERP.Infrastructure.Persistence.Repositories
             _dbContext = dbContext;
             _readAppDbContext = readAppDbContext;
         }
-
         public async Task AddAsync(User user, CancellationToken cancellationToken = default)
         {
             await _dbContext.Users.AddAsync(user, cancellationToken);
         }
-
-        public async Task<List<User>> GetAllAsync(CancellationToken cancellationToken = default)
+        public async Task<bool> IsEmailExistAsync(string email, CancellationToken cancellationToken = default)
         {
-            return await _readAppDbContext.Users.ToListAsync(cancellationToken);
-        }
-
-        public async Task<User?> GetByEmailAsync(string email, CancellationToken cancellationToken = default)
-        {
-            return await _readAppDbContext.Users.FirstOrDefaultAsync(u => u.Email == email, cancellationToken);
+            return await _readAppDbContext.Users.AnyAsync(u => u.Email == email, cancellationToken);
         }
     }
 }

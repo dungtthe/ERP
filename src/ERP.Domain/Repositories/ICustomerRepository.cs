@@ -4,8 +4,7 @@ namespace ERP.Domain.Repositories
 {
     public interface ICustomerRepository
     {
-        Task<List<Customer>> GetAllAsync(CancellationToken cancellationToken = default);
-        Task<Customer?> GetCustomerByIdAsync(Guid id, CancellationToken cancellationToken = default);
+        Task<bool> IsCustomerExistAsync(Guid id, CancellationToken cancellationToken = default);
         Task AddAsync(Customer customer, CancellationToken cancellationToken = default);
     }
 }
