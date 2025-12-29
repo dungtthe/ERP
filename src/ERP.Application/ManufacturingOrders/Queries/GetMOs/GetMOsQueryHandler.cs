@@ -4,7 +4,7 @@ using ERP.Application.Helpers.Paginations;
 using ERP.Domain.Shared;
 using Microsoft.EntityFrameworkCore;
 
-namespace ERP.Application.ManufacturingOrders.Commands.GetMOs
+namespace ERP.Application.ManufacturingOrders.Queries.GetMOs
 {
     public class GetMOsQueryHandler : IQueryHandler<GetMOsQuery, PagedList<MOResponse>>
     {

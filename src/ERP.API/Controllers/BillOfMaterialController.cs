@@ -1,9 +1,5 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using ERP.Application.BOM.Commands.CreateBOM;
 using ERP.Application.BOM.Queries.GetBOMByProductVariantId;
-using ERP.Application.Products.Commands.CreateBOM;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -17,9 +13,9 @@ namespace ERP.API.Controllers
         }
 
         [HttpPost("create")]
-        public async Task<IActionResult> CreateBOM([FromBody] CreateBOMCommand command)
+        public async Task<IActionResult> CreateBOM([FromBody] CreateBOMCommand command, CancellationToken cancellationToken)
         {
-            var result = await _sender.Send(command);
+            var result = await _sender.Send(command, cancellationToken);
             if (result.IsFailure)
             {
                 return BadRequest(result.Error);

@@ -64,5 +64,17 @@ namespace ERP.Domain.Errors
         {
             public static readonly Error NotFound = new Error("BOM.NotFound", "BOM không tồn tại");
         }
+        public static class Routing
+        {
+            public static readonly Error NotFound = new Error("Routing.NotFound", "Bảng định mức công đoạn không tồn tại");
+        }
+        public static class RoutingStep
+        {
+            public static readonly Error NotFound = new Error("RoutingStep.NotFound", "Công đoạn định mức không tồn tại");
+        }
+        public static class WorkCenter
+        {
+            public static readonly Error NotFound = new Error("WorkCenter.NotFound", "Trung tâm công việc không tồn tại");
+        }
     }
 }

@@ -43,6 +43,7 @@ namespace ERP.Application.RoutingSteps.Queries.GetStepsByBOMId
 
             var result = routingSteps.Select(x => new RoutingStepResponse
             {
+                RoutingId = x.RoutingId,
                 RoutingStepId = x.Id,
                 StepOrder = x.StepOrder,
                 OperationName = x.OperationName,

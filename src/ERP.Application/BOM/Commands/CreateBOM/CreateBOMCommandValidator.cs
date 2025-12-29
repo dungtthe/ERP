@@ -1,6 +1,6 @@
 using FluentValidation;
 
-namespace ERP.Application.Products.Commands.CreateBOM
+namespace ERP.Application.BOM.Commands.CreateBOM
 {
     public class CreateBOMCommandValidator : AbstractValidator<CreateBOMCommand>
     {

@@ -1,6 +1,6 @@
 using ERP.Domain.Enums;
 
-namespace ERP.Application.ManufacturingOrders.Commands.GetMOs
+namespace ERP.Application.ManufacturingOrders.Queries.GetMOs
 {
     public record MOResponse
     {

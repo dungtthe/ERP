@@ -9,11 +9,6 @@ using ERP.Infrastructure.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ERP.Infrastructure
 {
@@ -42,7 +37,10 @@ namespace ERP.Infrastructure
             services.AddScoped<IBillOfMaterialRepository, BillOfMaterialRepository>();
             services.AddScoped<IBillOfMaterialItemRepository, BillOfMaterialItemRepository>();
             services.AddScoped<IWorkCenterRepository, WorkCenterRepository>();
-
+            services.AddScoped<IRoutingStepRepository, RoutingStepRepository>();
+            services.AddScoped<IRoutingRepository, RoutingRepository>();
+            services.AddScoped<IMORepository, MORepository>();
+            services.AddScoped<IWorkOrderRepository, WorkOrderRepository>();
 
             services.AddScoped<IUserService, UserService>();
             services.AddSingleton<IJwtProvider, JwtProvider>();

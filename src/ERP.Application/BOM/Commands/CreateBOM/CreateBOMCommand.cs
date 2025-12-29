@@ -1,6 +1,6 @@
 using ERP.Application.Abstractions.Messaging;
 
-namespace ERP.Application.Products.Commands.CreateBOM
+namespace ERP.Application.BOM.Commands.CreateBOM
 {
     public record CreateBOMCommand(
     Guid ProductId,

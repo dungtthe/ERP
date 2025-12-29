@@ -2,6 +2,7 @@ namespace ERP.Application.RoutingSteps.Queries.GetStepsByBOMId
 {
     public record RoutingStepResponse
     {
+        public Guid RoutingId { get; init; }
         public Guid RoutingStepId { get; init; }
         public byte StepOrder { get; init; }
         public string? OperationName { get; init; }

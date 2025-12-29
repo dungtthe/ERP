@@ -4,7 +4,7 @@ using ERP.Domain.Errors;
 using ERP.Domain.Repositories;
 using ERP.Domain.Shared;
 
-namespace ERP.Application.Products.Commands.CreateBOM
+namespace ERP.Application.BOM.Commands.CreateBOM
 {
     public class CreateBOMCommandHandler : ICommandHandler<CreateBOMCommand, Guid>
     {
