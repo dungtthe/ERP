@@ -11,15 +11,19 @@ namespace ERP.Application.BOM.Queries.GetBOMByProductVariantId
     {
         private readonly IReadAppDbContext _readAppDbContext;
         private readonly IProductVariantRepository _productVariantRepository;
-        public GetBOMByProductIdQueryHandler(IReadAppDbContext readAppDbContext, IProductVariantRepository productVariantRepository)
+        private readonly IProductRepository _productRepository;
+
+        public GetBOMByProductIdQueryHandler(IReadAppDbContext readAppDbContext, IProductVariantRepository productVariantRepository, IProductRepository productRepository)
         {
             _readAppDbContext = readAppDbContext;
             _productVariantRepository = productVariantRepository;
+            _productRepository = productRepository;
         }
 
         public async Task<Result<BOMByProductVarIdResponse>> Handle(GetBOMByProductVarIdQuery request, CancellationToken cancellationToken)
         {
-            if (!await _productVariantRepository.IsProductVariantExist(request.productVariantId))
+            if (!await _productVariantRepository.IsProductVariantExist(request.productVariantId) &&
+                !await _productRepository.IsProductExist(request.productVariantId))
             {
                 return Result.Failure<BOMByProductVarIdResponse>(DomainErrors.ProductVariant.NotFound);
             }
@@ -29,6 +33,16 @@ namespace ERP.Application.BOM.Queries.GetBOMByProductVariantId
                             .Where(x => x.ProductVariantId == request.productVariantId)
                             .OrderByDescending(x => x.Version)
                             .FirstOrDefaultAsync(cancellationToken);
+
+            if (bom == null)
+            {
+                bom = await _readAppDbContext.BillOfMaterials
+                            .Include(x => x.ProductVariant)
+                            .Where(x => x.ProductId == request.productVariantId)
+                            .OrderByDescending(x => x.Version)
+                            .FirstOrDefaultAsync(cancellationToken);
+
+            }
 
             var bomItem = await _readAppDbContext.BillOfMaterialItems
                                    .Include(x => x.UnitOfMeasure)
