@@ -8,5 +8,6 @@ namespace ERP.Domain.Repositories
         Task<bool> IsManufacturingOrderExistsAsync(Guid manufacturingOrderId, CancellationToken cancellationToken);
         Task ConfirmAsync(Guid manufacturingOrderId, CancellationToken cancellationToken);
         Task CancelAsync(Guid manufacturingOrderId, CancellationToken cancellationToken);
+        Task DoneAsync(Guid manufacturingOrderId, CancellationToken cancellationToken);
     }
 }

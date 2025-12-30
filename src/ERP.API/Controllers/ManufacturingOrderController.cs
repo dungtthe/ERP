@@ -1,6 +1,7 @@
 using ERP.Application.ManufacturingOrders.Commands.CancelMO;
 using ERP.Application.ManufacturingOrders.Commands.ConfirmMO;
 using ERP.Application.ManufacturingOrders.Commands.CreateMO;
+using ERP.Application.ManufacturingOrders.Commands.DoneMO;
 using ERP.Application.ManufacturingOrders.Queries.GetMOs;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -45,6 +46,17 @@ namespace ERP.API.Controllers
 
         [HttpPut("cancel")]
         public async Task<IActionResult> CancelMO([FromBody] CancelMOCommand command, CancellationToken cancellationToken)
+        {
+            var result = await _sender.Send(command, cancellationToken);
+            if (result.IsFailure)
+            {
+                return BadRequest(result.Error);
+            }
+            return Ok(new { id = result.Value });
+        }
+
+        [HttpPut("done")]
+        public async Task<IActionResult> DoneMO([FromBody] DoneMOCommand command, CancellationToken cancellationToken)
         {
             var result = await _sender.Send(command, cancellationToken);
             if (result.IsFailure)

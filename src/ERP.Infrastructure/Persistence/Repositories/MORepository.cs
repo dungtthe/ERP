@@ -39,9 +39,18 @@ namespace ERP.Infrastructure.Persistence.Repositories
             }
         }
 
+        public async Task DoneAsync(Guid manufacturingOrderId, CancellationToken cancellationToken)
+        {
+            var manufacturingOrder = await _context.ManufacturingOrders.FirstOrDefaultAsync(x => x.Id == manufacturingOrderId);
+            if (manufacturingOrder != null)
+            {
+                manufacturingOrder.ManufacturingOrderStatus = ManufacturingOrderStatus.Done;
+            }
+        }
+
         public async Task<bool> IsManufacturingOrderExistsAsync(Guid manufacturingOrderId, CancellationToken cancellationToken)
         {
-            return await _context.ManufacturingOrders.AnyAsync(x => x.Id == manufacturingOrderId, cancellationToken);
+            return await _readContext.ManufacturingOrders.AnyAsync(x => x.Id == manufacturingOrderId, cancellationToken);
         }
     }
 }
