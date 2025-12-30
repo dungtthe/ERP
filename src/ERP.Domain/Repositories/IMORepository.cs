@@ -9,5 +9,6 @@ namespace ERP.Domain.Repositories
         Task ConfirmAsync(Guid manufacturingOrderId, CancellationToken cancellationToken);
         Task CancelAsync(Guid manufacturingOrderId, CancellationToken cancellationToken);
         Task DoneAsync(Guid manufacturingOrderId, CancellationToken cancellationToken);
+        Task<ManufacturingOrder> GetByIdAsync(Guid manufacturingOrderId, CancellationToken cancellationToken);
     }
 }

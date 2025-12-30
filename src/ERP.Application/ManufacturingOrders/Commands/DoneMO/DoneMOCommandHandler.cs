@@ -18,7 +18,7 @@ namespace ERP.Application.ManufacturingOrders.Commands.DoneMO
         {
             if (!await _moRepository.IsManufacturingOrderExistsAsync(request.ManufacturingOrderId, cancellationToken))
             {
-                return Result.Failure<Guid>(DomainErrors.ManufacturingOrder.ManufacturingOrderNotFound);
+                return Result.Failure<Guid>(DomainErrors.ManufacturingOrder.NotFound);
             }
             await _moRepository.DoneAsync(request.ManufacturingOrderId, cancellationToken);
             await _unitOfWork.SaveChangesAsync(cancellationToken);

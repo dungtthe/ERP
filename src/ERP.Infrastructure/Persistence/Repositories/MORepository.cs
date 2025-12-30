@@ -48,6 +48,11 @@ namespace ERP.Infrastructure.Persistence.Repositories
             }
         }
 
+        public async Task<ManufacturingOrder> GetByIdAsync(Guid manufacturingOrderId, CancellationToken cancellationToken)
+        {
+            return await _context.ManufacturingOrders.FirstOrDefaultAsync(x => x.Id == manufacturingOrderId, cancellationToken) ?? null!;
+        }
+
         public async Task<bool> IsManufacturingOrderExistsAsync(Guid manufacturingOrderId, CancellationToken cancellationToken)
         {
             return await _readContext.ManufacturingOrders.AnyAsync(x => x.Id == manufacturingOrderId, cancellationToken);

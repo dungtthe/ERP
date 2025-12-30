@@ -2,6 +2,7 @@ using ERP.Application.ManufacturingOrders.Commands.CancelMO;
 using ERP.Application.ManufacturingOrders.Commands.ConfirmMO;
 using ERP.Application.ManufacturingOrders.Commands.CreateMO;
 using ERP.Application.ManufacturingOrders.Commands.DoneMO;
+using ERP.Application.ManufacturingOrders.Queries.GetMOById;
 using ERP.Application.ManufacturingOrders.Queries.GetMOs;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -64,6 +65,18 @@ namespace ERP.API.Controllers
                 return BadRequest(result.Error);
             }
             return Ok(new { id = result.Value });
+        }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetMOById(Guid id, CancellationToken cancellationToken)
+        {
+            var query = new GetMOByIdQuery(id);
+            var result = await _sender.Send(query, cancellationToken);
+            if (result.IsFailure)
+            {
+                return BadRequest(result.Error);
+            }
+            return Ok(result.Value);
         }
     }
 }
