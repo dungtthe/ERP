@@ -1,3 +1,4 @@
+using ERP.Application.ManufacturingOrders.Commands.ConfirmMO;
 using ERP.Application.ManufacturingOrders.Commands.CreateMO;
 using ERP.Application.ManufacturingOrders.Queries.GetMOs;
 using MediatR;
@@ -27,7 +28,18 @@ namespace ERP.API.Controllers
             {
                 return BadRequest(result.Error);
             }
-            return Ok(result.Value);
+            return Ok(new { id = result.Value });
+        }
+
+        [HttpPut("confirm")]
+        public async Task<IActionResult> ConfirmMO([FromBody] ConfirmMOCommand command, CancellationToken cancellationToken)
+        {
+            var result = await _sender.Send(command, cancellationToken);
+            if (result.IsFailure)
+            {
+                return BadRequest(result.Error);
+            }
+            return Ok(new { id = result.Value });
         }
     }
 }
