@@ -4,6 +4,7 @@ using ERP.Application.ManufacturingOrders.Commands.CreateMO;
 using ERP.Application.ManufacturingOrders.Commands.DoneMO;
 using ERP.Application.ManufacturingOrders.Queries.GetMOById;
 using ERP.Application.ManufacturingOrders.Queries.GetMOs;
+using ERP.Application.WorkCenters.Queries.GetWorkCenterByMOId;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -71,6 +72,18 @@ namespace ERP.API.Controllers
         public async Task<IActionResult> GetMOById(Guid id, CancellationToken cancellationToken)
         {
             var query = new GetMOByIdQuery(id);
+            var result = await _sender.Send(query, cancellationToken);
+            if (result.IsFailure)
+            {
+                return BadRequest(result.Error);
+            }
+            return Ok(result.Value);
+        }
+
+        [HttpGet("get-work-centers/{id}")]
+        public async Task<IActionResult> GetWorkCentersByMOId(Guid id, CancellationToken cancellationToken)
+        {
+            var query = new GetWorkCentersByMOIdQuery(id);
             var result = await _sender.Send(query, cancellationToken);
             if (result.IsFailure)
             {
