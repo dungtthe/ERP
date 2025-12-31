@@ -80,5 +80,9 @@ namespace ERP.Domain.Errors
         {
             public static readonly Error NotFound = new Error("ManufacturingOrder.NotFound", "Lệnh sản xuất không tồn tại");
         }
+        public static class WorkOrder
+        {
+            public static readonly Error NotFound = new Error("WorkOrder.NotFound", "Công việc sản xuất không tồn tại");
+        }
     }
 }

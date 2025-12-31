@@ -28,5 +28,10 @@ namespace ERP.Domain.Entities
         {
             return new WorkOrder(Guid.NewGuid(), manufacturingOrderId, workCenterId, routingStepId);
         }
+        public void Update(Guid workCenterId, Guid routingStepId)
+        {
+            WorkCenterId = workCenterId;
+            RoutingStepId = routingStepId;
+        }
     }
 }

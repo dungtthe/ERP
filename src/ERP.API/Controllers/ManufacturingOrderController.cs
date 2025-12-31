@@ -2,6 +2,7 @@ using ERP.Application.ManufacturingOrders.Commands.CancelMO;
 using ERP.Application.ManufacturingOrders.Commands.ConfirmMO;
 using ERP.Application.ManufacturingOrders.Commands.CreateMO;
 using ERP.Application.ManufacturingOrders.Commands.DoneMO;
+using ERP.Application.ManufacturingOrders.Commands.UpdateMO;
 using ERP.Application.ManufacturingOrders.Queries.GetMOById;
 using ERP.Application.ManufacturingOrders.Queries.GetMOs;
 using ERP.Application.WorkCenters.Queries.GetWorkCenterByMOId;
@@ -90,6 +91,17 @@ namespace ERP.API.Controllers
                 return BadRequest(result.Error);
             }
             return Ok(result.Value);
+        }
+
+        [HttpPut("update")]
+        public async Task<IActionResult> UpdateMO([FromBody] UpdateMOCommand command, CancellationToken cancellationToken)
+        {
+            var result = await _sender.Send(command, cancellationToken);
+            if (result.IsFailure)
+            {
+                return BadRequest(result.Error);
+            }
+            return Ok(new { id = result.Value });
         }
     }
 }

@@ -28,5 +28,14 @@ namespace ERP.Domain.Entities
         {
             return new ManufacturingOrder(Guid.NewGuid(), code, routingId, quantityToProduce, quantityProduced, manufacturingOrderStatus, startDate, endDate);
         }
+
+        public void Update(string code, Guid routingId, decimal quantityToProduce, DateTime startDate, DateTime endDate)
+        {
+            Code = code;
+            RoutingId = routingId;
+            QuantityToProduce = quantityToProduce;
+            StartDate = DateTime.SpecifyKind(startDate, DateTimeKind.Utc);
+            EndDate = DateTime.SpecifyKind(endDate, DateTimeKind.Utc);
+        }
     }
 }
